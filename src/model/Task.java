@@ -36,7 +36,7 @@ public class Task {
         this.status = status;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
