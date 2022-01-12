@@ -5,20 +5,18 @@ import java.util.ArrayList;
 import static model.Status.*;
 
 public class Epic extends Task {
-    ArrayList<Task> subTasks = new ArrayList<>();
+    ArrayList<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(String name, String description, int id, String status,
-                ArrayList<Task> subTasks) {
-        super(name, description, id, status);
+    public Epic(String name, String description, int id, ArrayList<SubTask> subTasks) {
+        super(name, description, id);
         this.subTasks = subTasks;
     }
 
     public void addSubTask(SubTask subTask) {
-
         subTasks.add(subTask);
     }
 
-    public ArrayList<Task> getSubTasks() {
+    public ArrayList<SubTask> getSubTasks() {
         return subTasks;
     }
 
@@ -29,6 +27,11 @@ public class Epic extends Task {
     public void deleteSubTaskByEpic(SubTask subTask) {
         subTasks.remove(subTask);
 
+    }
+
+    @Override
+    public void setStatus(String status) {
+        super.setStatus(status);
     }
 
     @Override
