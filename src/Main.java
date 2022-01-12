@@ -21,8 +21,7 @@ public class Main {
         manager.deleteAllTasks();
         System.out.println("Все задачи после удаления: " + manager.returnAllTask());
         System.out.println("Проверка эпиков и подзадач");
-        Epic newEpic1 = new Epic("Переезд", "", 1,
-                IN_PROGRESS, new ArrayList<Task>());
+        Epic newEpic1 = new Epic("Переезд", "", 1, new ArrayList<SubTask>());
         manager.addEpic(newEpic1);
         System.out.println("Новый эпик: " + manager.findEpicsByID(1));
         SubTask newSubTask1 = new SubTask("Ремонт", "ванная", 1,
@@ -31,17 +30,14 @@ public class Main {
         SubTask newSubTask2 = new SubTask("Собрать вещи", "", 2, NEW, newEpic1);
         manager.addSubTask(newSubTask2);
         System.out.println("Все подзадачи эпика: " + manager.returnAllSubTasksByEpic(1));
-        System.out.println("Подзадача, id = " + manager.subTasks.get(1).getId() + ": "
-                + manager.findSubTaskById(1));
-        System.out.println("Подзадача, id = " + manager.subTasks.get(2).getId() + ": "
-                + manager.findSubTaskById(2));
+        System.out.println("Подзадача, id = 1: " + manager.findSubTaskById(1));
+        System.out.println("Подзадача, id = 2: " + manager.findSubTaskById(2));
         SubTask newSubTask21 = new SubTask("Собрать вещи", "не забыть кота",
                 2, IN_PROGRESS, newEpic1);
         manager.updateSubTask(newSubTask21);
         System.out.println("Эпик после обновления подзадачи: " + manager.findEpicsByID(1));
         System.out.println("Все подзадачи эпика: " + manager.returnAllSubTasksByEpic(1));
-        System.out.println("Подзадача после обновления, id = " +
-                manager.subTasks.get(2).getId() + ": " + manager.findSubTaskById(2));
+        System.out.println("Подзадача после обновления, id = 2: " + manager.findSubTaskById(2));
         manager.deleteSubTask(2);
         System.out.println("Эпик после удаления подзадачи: " + manager.findEpicsByID(1));
         manager.deleteAllSubTasks();
