@@ -5,12 +5,10 @@ import model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static model.Status.*;
-
 public class Manager {
-    final HashMap<Integer, Task> tasks = new HashMap<>();
-    final HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    final HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
 
     public ArrayList<Task> returnAllTask() {
         final ArrayList<Task> allTask = new ArrayList<>(tasks.values());
@@ -22,11 +20,11 @@ public class Manager {
         return allEpic;
     }
 
-    public ArrayList<Task> returnAllSubTasksByEpic(int id) {
+    public ArrayList<SubTask> returnAllSubTasksByEpic(int id) {
         if (!epics.containsKey(id)) {
             return null;
         }
-        final ArrayList<Task> allSubTasksByEpic = epics.get(id).getSubTasks();
+        final ArrayList<SubTask> allSubTasksByEpic = epics.get(id).getSubTasks();
         return allSubTasksByEpic;
     }
 
@@ -70,8 +68,8 @@ public class Manager {
     }
 
     public Epic addEpic(Epic epic) {
-        final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId(),
-                epic.getStatus(), epic.getSubTasks());
+        final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId()
+                , epic.getSubTasks());
         if (epics.containsKey(epic.getId())) {
             return null;
         } else {
@@ -101,7 +99,7 @@ public class Manager {
 
     private void updateEpic(Epic epic) {
         final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId(),
-                epic.getStatus(), epic.getSubTasks());
+                epic.getSubTasks());
         if (epics.containsKey(epic.getId())) {
             epics.put(epic.getId(), value);
             epic.getStatus();
