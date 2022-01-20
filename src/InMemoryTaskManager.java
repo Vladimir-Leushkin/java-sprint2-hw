@@ -5,7 +5,7 @@ import model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
@@ -13,17 +13,20 @@ public class InMemoryTaskManager implements TaskManager{
     public InMemoryTaskManager() {
     }
 
+
     @Override
     public ArrayList<Task> returnAllTask() {
         final ArrayList<Task> allTask = new ArrayList<>(tasks.values());
         return allTask;
     }
 
+
     @Override
     public ArrayList<Task> returnAllEpic() {
         final ArrayList<Task> allEpic = new ArrayList<>(epics.values());
         return allEpic;
     }
+
 
     @Override
     public ArrayList<SubTask> returnAllSubTasksByEpic(int id) {
@@ -34,20 +37,24 @@ public class InMemoryTaskManager implements TaskManager{
         return allSubTasksByEpic;
     }
 
+
     @Override
     public Task findTaskById(int id) {
         return tasks.get(id);
     }
+
 
     @Override
     public Task findSubTaskById(int id) {
         return subTasks.get(id);
     }
 
+
     @Override
     public Task findEpicsByID(int id) {
         return epics.get(id);
     }
+
 
     @Override
     public Task addTask(Task task) {
@@ -60,6 +67,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
         return value;
     }
+
 
     @Override
     public SubTask addSubTask(SubTask subTask) {
@@ -78,6 +86,7 @@ public class InMemoryTaskManager implements TaskManager{
         return value;
     }
 
+
     @Override
     public Epic addEpic(Epic epic) {
         final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId()
@@ -90,6 +99,7 @@ public class InMemoryTaskManager implements TaskManager{
         return value;
     }
 
+
     @Override
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
@@ -98,6 +108,7 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Такая задача не существует");
         }
     }
+
 
     @Override
     public void updateSubTask(SubTask subTask) {
@@ -111,6 +122,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+
     @Override
     public void updateEpic(Epic epic) {
         final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId(),
@@ -123,6 +135,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+
     @Override
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
@@ -132,10 +145,12 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+
     @Override
     public void deleteAllTasks() {
         tasks.clear();
     }
+
 
     @Override
     public void deleteSubTask(int id) {
@@ -148,6 +163,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
+
     @Override
     public void deleteAllSubTasks() {
         subTasks.clear();
@@ -155,6 +171,7 @@ public class InMemoryTaskManager implements TaskManager{
             epic.deleteAllSubTaskByEpic();
         }
     }
+
 
     @Override
     public void deleteEpic(int id) {
@@ -170,6 +187,7 @@ public class InMemoryTaskManager implements TaskManager{
             System.out.println("Такая задача не существует");
         }
     }
+
 
     @Override
     public void deleteAllEpics() {
