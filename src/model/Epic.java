@@ -30,12 +30,12 @@ public class Epic extends Task {
     }
 
     @Override
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         super.setStatus(status);
     }
 
     @Override
-    public String getStatus() {
+    public Status getStatus() {
         int newTask = 0;
         int doneTask = 0;
 
