@@ -1,15 +1,17 @@
+package controller;
+
 import model.Epic;
 import model.SubTask;
 import model.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
-    ArrayList<Task> returnAllTask();
+    List<Task> returnAllTask();
 
-    ArrayList<Task> returnAllEpic();
+    List<Task> returnAllEpic();
 
-    ArrayList<SubTask> returnAllSubTasksByEpic(int id);
+    List<SubTask> returnAllSubTasksByEpic(int id);
 
     Task findTaskById(int id);
 
@@ -40,4 +42,6 @@ public interface TaskManager {
     void deleteEpic(int id);
 
     void deleteAllEpics();
+
+    List<Task> history();
 }
