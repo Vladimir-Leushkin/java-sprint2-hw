@@ -1,3 +1,6 @@
+import controller.InMemoryTaskManager;
+import controller.Managers;
+import controller.TaskManager;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -8,7 +11,7 @@ import static model.Status.*;
 
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        final TaskManager manager = Managers.getDefault();
 
         System.out.println("Проверка задач");
         Task newTask41 = new Task("", "", 1, NEW);
@@ -24,6 +27,20 @@ public class Main {
         Epic newEpic1 = new Epic("Переезд", "", 1, new ArrayList<SubTask>());
         manager.addEpic(newEpic1);
         System.out.println("Новый эпик: " + manager.findEpicsByID(1));
+        if (manager.history().isEmpty()) {
+            System.out.println("Не работает метод история");
+        } else {
+            for (Task item : manager.history()) {
+                System.out.println("История : " + item);
+            }
+        }
+        System.out.println("Проверка истории");
+        for (int i = 0; i < 10; i++) {
+            manager.findEpicsByID(1);
+        }
+        for (Task item : manager.history()) {
+            System.out.println("История : " + item);
+        }
         SubTask newSubTask1 = new SubTask("Ремонт", "ванная", 1,
                 DONE, newEpic1);
         manager.addSubTask(newSubTask1);
