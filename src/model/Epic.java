@@ -1,13 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static model.Status.*;
 
 public class Epic extends Task {
-    ArrayList<SubTask> subTasks = new ArrayList<>();
+    List<SubTask> subTasks;
 
-    public Epic(String name, String description, int id, ArrayList<SubTask> subTasks) {
+    public Epic(String name, String description, int id, List<SubTask> subTasks) {
         super(name, description, id);
         this.subTasks = subTasks;
     }
@@ -16,7 +17,7 @@ public class Epic extends Task {
         subTasks.add(subTask);
     }
 
-    public ArrayList<SubTask> getSubTasks() {
+    public List<SubTask> getSubTasks() {
         return subTasks;
     }
 
@@ -31,7 +32,6 @@ public class Epic extends Task {
 
     @Override
     public void setStatus(Status status) {
-        super.setStatus(status);
     }
 
     @Override
