@@ -40,7 +40,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task findTaskById(int id) {
-        return tasks.get(id);
+        final Task task = tasks.get(id);
+        if (task == null) {
+            return null;
+        }
+        checkHistory();
+        history.add(task);
+        return task;
     }
 
     @Override
