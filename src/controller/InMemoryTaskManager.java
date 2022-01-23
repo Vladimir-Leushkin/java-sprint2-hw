@@ -124,9 +124,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubTask(SubTask subTask) {
         if (subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
-            updateEpic(subTask.getEpic());
             subTask.getEpic().deleteSubTaskByEpic(subTask);
             subTask.getEpic().addSubTask(subTask);
+            updateEpic(subTask.getEpic());
         } else {
             System.out.println("Такая подзадача не существует");
         }
