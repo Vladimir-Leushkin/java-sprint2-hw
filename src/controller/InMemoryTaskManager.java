@@ -13,6 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
+    private List<Task> history = new LinkedList<>();
 
     public InMemoryTaskManager() {
     }
@@ -197,14 +198,12 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.clear();
     }
 
-    List<Task> history = new LinkedList<>();
-
     @Override
     public List<Task> history() {
         return history;
     }
 
-    public void checkHistory() {
+    private void checkHistory() {
         if (history.size() == 10) {
             history.remove(0);
         }
