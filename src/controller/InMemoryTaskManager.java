@@ -35,7 +35,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epics.containsKey(id)) {
             return null;
         }
-        final ArrayList<SubTask> allSubTasksByEpic = epics.get(id).getSubTasks();
+        final List<SubTask> allSubTasksByEpic = epics.get(id).getSubTasks();
         return allSubTasksByEpic;
     }
 
@@ -137,8 +137,14 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic epic) {
         final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId(),
                 epic.getSubTasks());
+        final List<SubTask> allSubTaskByEpic = returnAllSubTasksByEpic(epic.getId());
         if (epics.containsKey(value.getId())) {
             epics.put(value.getId(), value);
+            for (SubTask subTask : allSubTaskByEpic) {
+                if (subTasks.containsKey(subTask)) {
+                    subTasks.remove(subTask);
+                }
+            }
             value.getStatus();
         } else {
             System.out.println("Такой эпик не существует");
