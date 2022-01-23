@@ -96,14 +96,13 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(value.getId(), value);
         final Epic epic = epics.get(subTask.getEpic().getId());
         epic.addSubTask(subTask);
-        updateEpic(subTask.getEpic());
         return value;
     }
 
     @Override
     public Epic addEpic(Epic epic) {
-        final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId()
-                , epic.getSubTasks());
+        final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId(),
+                epic.getSubTasks());
         if (epics.containsKey(epic.getId())) {
             return null;
         } else {
