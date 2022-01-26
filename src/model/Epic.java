@@ -6,11 +6,10 @@ import java.util.List;
 import static model.Status.*;
 
 public class Epic extends Task {
-    List<SubTask> subTasks;
+    private List<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(String name, String description, int id, List<SubTask> subTasks) {
+    public Epic(String name, String description, int id) {
         super(name, description, id);
-        this.subTasks = subTasks;
     }
 
     public void addSubTask(SubTask subTask) {
