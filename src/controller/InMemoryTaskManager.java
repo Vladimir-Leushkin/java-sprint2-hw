@@ -129,7 +129,6 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.put(newSubTask.getId(), newSubTask);
             epic.deleteSubTaskByEpic(saveSubTask);
             epic.addSubTask(newSubTask);
-            //epic.getStatus();
         } else {
             System.out.println("Такая подзадача не существует");
         }
