@@ -124,12 +124,12 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubTask(SubTask newSubTask) {
         final SubTask saveSubTask = subTasks.get(newSubTask.getId());
-        final Epic epic = epics.get(saveSubTask.getEpic().getId());
+        final Epic epic = epics.get(newSubTask.getEpic().getId());
         if (saveSubTask != null) {
             subTasks.put(newSubTask.getId(), newSubTask);
             epic.deleteSubTaskByEpic(saveSubTask);
             epic.addSubTask(newSubTask);
-            epic.getStatus();
+            //epic.getStatus();
         } else {
             System.out.println("Такая подзадача не существует");
         }
@@ -185,11 +185,11 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpic(int id) {
         final Epic epic = epics.remove(id);
         if (epic != null) {
-            epic.deleteAllSubTaskByEpic();
-            epics.remove(id);
             for (SubTask subTaskByEpic : epic.getSubTasks()) {
                 subTasks.remove(subTaskByEpic.getId());
             }
+            epic.deleteAllSubTaskByEpic();
+            epics.remove(id);
         } else {
             System.out.println("Такая задача не существует");
         }
