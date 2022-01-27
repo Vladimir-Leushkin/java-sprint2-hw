@@ -141,6 +141,7 @@ public class InMemoryTaskManager implements TaskManager {
             saveEpic.setName(newEpic.getName());
             saveEpic.setDescription(newEpic.getDescription());
             newEpic.getStatus();
+            saveEpic.deleteAllSubTaskByEpic();
         } else {
             System.out.println("Такой эпик не существует");
         }
