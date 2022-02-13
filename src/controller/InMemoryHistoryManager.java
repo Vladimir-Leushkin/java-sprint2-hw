@@ -5,10 +5,11 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    Node head = null;
-    Node tail = null;
-    HashMap<Integer, Node> map = new HashMap<>();
     private static final int RECENT_TASKS_COUNT = 10;
+    private Node head = null;
+    private Node tail = null;
+    HashMap<Integer, Node> map = new HashMap<>();
+
 
     public InMemoryHistoryManager() {
     }
@@ -18,8 +19,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (task == null) {
             return;
         } else if (map.size() == RECENT_TASKS_COUNT) {
-            LinkedList<Task> tasks = new LinkedList<>(getHistory());
-            remove(tasks.getFirst().getId());
+            removeFirst();
         }
         linkLast(task);
     }
@@ -41,8 +41,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(Integer id) {
         final Node oldTask = map.remove(id);
-        if (oldTask == null) {
-        } else if (oldTask != null) {
+        if (oldTask != null) {
             if (oldTask == head) {
                 head = oldTask.next;
                 oldTask.prev = null;
@@ -67,6 +66,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
+    public void removeFirst(){
+        Node current = head;
+        remove(current.task.getId());
+    }
 
     static class Node {
         final Task task;
