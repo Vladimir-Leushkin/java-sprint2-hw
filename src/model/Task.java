@@ -1,12 +1,14 @@
 package model;
 
 public class Task {
+    private TaskType type;
     private String name;
     private String description;
     private int id;
     private Status status;
 
-    public Task(String name, String description, int id, Status status) {
+    public Task(TaskType type, String name, String description, int id, Status status) {
+        this.type = type;
         this.name = name;
         this.description = description;
         this.id = id;
@@ -14,16 +16,26 @@ public class Task {
     }
 
     public Task(Task task) {
+        this.type = task.type;
         this.name = task.name;
         this.description = task.description;
         this.id = task.id;
         this.status = task.status;
     }
 
-    public Task(String name, String description, int id) {
+    public Task(TaskType type, String name, String description, int id) {
+        this.type = type;
         this.name = name;
         this.description = description;
         this.id = id;
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -74,6 +86,7 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
+                "type='" + type + '\'' +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
