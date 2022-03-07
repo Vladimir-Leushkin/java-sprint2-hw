@@ -8,8 +8,8 @@ import static model.Status.*;
 public class Epic extends Task {
     private List<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(TaskType type, String name, String description, int id) {
-        super(type, name, description, id);
+    public Epic(int id, TaskType type, String name, String description ) {
+        super(id, type, name, description);
     }
 
     public void addSubTask(SubTask subTask) {
@@ -76,5 +76,11 @@ public class Epic extends Task {
                 ", status='" + getStatus() + '\'' +
                 ", subTasks=" + getSubTasks().size() +
                 '}';
+    }
+
+    @Override
+    public String asString() {
+        return super.asString();
+        
     }
 }

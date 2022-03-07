@@ -7,9 +7,9 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
+    HashMap<Integer, Task> tasks = new HashMap<>();
+    HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    HashMap<Integer, Epic> epics = new HashMap<>();
     HistoryManager history1 = new InMemoryHistoryManager();
 
     public InMemoryTaskManager() {
@@ -57,54 +57,51 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic findEpicsByID(int id) {
+    public Epic findEpicById(int id) {
         final Epic epic = epics.get(id);
         if (epic == null) {
             return null;
         }
-        //checkHistory();
         history1.add(epic);
         return epic;
     }
 
     @Override
-    public Task addTask(Task task) {
-        final Task value = new Task(task.getName(), task.getDescription(),
-                task.getId(), task.getStatus());
+    public void addTask(Task task) {
+        final Task value = new Task(task.getId(), task.getType(), task.getName(), task.getStatus(),
+                task.getDescription());
         if (tasks.containsKey(task.getId())) {
-            return null;
+            return ;
         } else {
             tasks.put(task.getId(), value);
         }
-        return value;
     }
 
     @Override
-    public SubTask addSubTask(SubTask subTask) {
-        final SubTask value = new SubTask(subTask.getName(), subTask.getDescription(),
-                subTask.getId(), subTask.getStatus(), subTask.getEpic());
+    public void addSubTask(SubTask subTask) {
+        final SubTask value = new SubTask(subTask.getId(), subTask.getType(), subTask.getName(),
+                 subTask.getStatus(), subTask.getDescription(), subTask.getEpic());
         if (subTasks.containsKey(subTask.getId())) {
-            return null;
+            return;
         }
         if (!epics.containsKey(subTask.getEpic().getId())) {
-            return null;
+            return;
         }
         subTasks.put(value.getId(), value);
         final Epic epic = epics.get(subTask.getEpic().getId());
         epic.addSubTask(subTask);
         epic.getStatus();
-        return value;
     }
 
     @Override
-    public Epic addEpic(Epic epic) {
-        final Epic value = new Epic(epic.getName(), epic.getDescription(), epic.getId());
+    public void addEpic(Epic epic) {
+        final Epic value = new Epic(epic.getId(), epic.getType(), epic.getName(),
+                epic.getDescription());
         if (epics.containsKey(epic.getId())) {
-            return null;
+            return;
         } else {
             epics.put(epic.getId(), value);
         }
-        return value;
     }
 
     @Override
