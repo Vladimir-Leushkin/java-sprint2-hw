@@ -1,13 +1,14 @@
 package model;
 
 public class Task {
+    private int id;
     private TaskType type;
     private String name;
-    private String description;
-    private int id;
     private Status status;
+    private String description;
+    private static final String NULL_STRING = "null";
 
-    public Task(TaskType type, String name, String description, int id, Status status) {
+    public Task(int id, TaskType type, String name, Status status, String description) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -23,7 +24,7 @@ public class Task {
         this.status = task.status;
     }
 
-    public Task(TaskType type, String name, String description, int id) {
+    public Task(int id, TaskType type, String name, String description) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -87,10 +88,21 @@ public class Task {
     public String toString() {
         return "Task{" +
                 "type='" + type + '\'' +
-                "name='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
+                ", id=" + id + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String asString() {
+        return String.format(
+                "%s,%s,%s,%s,%s\n",
+                id,
+                type,
+                name.isEmpty() ? NULL_STRING : name,
+                status,
+                description.isEmpty() ? NULL_STRING : description
+        );
     }
 }

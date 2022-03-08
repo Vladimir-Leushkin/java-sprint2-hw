@@ -7,8 +7,9 @@ import static model.Status.*;
 
 public class Epic extends Task {
     private List<SubTask> subTasks = new ArrayList<>();
+    private static final String NULL_STRING = "null";
 
-    public Epic(int id, TaskType type, String name, String description ) {
+    public Epic(int id, TaskType type, String name, String description) {
         super(id, type, name, description);
     }
 
@@ -70,7 +71,7 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 "type='" + getType() + '\'' +
-                "name='" + getName() + '\'' +
+                ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", id=" + getId() +
                 ", status='" + getStatus() + '\'' +
@@ -80,7 +81,13 @@ public class Epic extends Task {
 
     @Override
     public String asString() {
-        return super.asString();
-        
+        return String.format(
+                "%s,%s,%s,%s\n",
+                super.getId(),
+                super.getType(),
+                super.getName().isEmpty() ? NULL_STRING : super.getName(),
+                super.getDescription().isEmpty() ? NULL_STRING : super.getDescription()
+        );
+
     }
 }

@@ -15,15 +15,15 @@ public interface TaskManager {
 
     Task findTaskById(int id);
 
-    Task findSubTaskById(int id);
+    Epic findEpicById(int id);
 
-    Task findEpicsByID(int id);
+    SubTask findSubTaskById(int id);
 
-    Task addTask(Task task);
+    void addTask(Task task);
 
-    SubTask addSubTask(SubTask subTask);
+    void addSubTask(SubTask subTask);
 
-    Epic addEpic(Epic epic);
+    void addEpic(Epic epic);
 
     void updateTask(Task task);
 
