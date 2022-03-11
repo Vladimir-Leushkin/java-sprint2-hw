@@ -3,14 +3,12 @@ package controller;
 import model.*;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static model.Status.DONE;
-import static model.Status.NEW;
+import static model.Status.*;
 import static model.TaskType.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
@@ -213,7 +211,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String[] fields = value.split(FIELDS_SPLITTER);
         return new SubTask(
                 Integer.parseInt(fields[0]),
-                valueOf(fields[1]),
+                TaskType.valueOf(fields[1]),
                 NULL_STRING.equals(fields[2]) ? "" : fields[2],
                 Status.valueOf(fields[3]),
                 NULL_STRING.equals(fields[4]) ? "" : fields[4],
@@ -261,8 +259,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.findSubTaskById(3);
         System.out.println(manager.returnAllTask().size());
         System.out.println(manager.returnAllEpic().size());
-        final FileBackedTasksManager newManager = new FileBackedTasksManager("resources/newFile.csv");
-        newManager.loadFromFile("resources/file.csv", "resources/newFile.csv");
+        final FileBackedTasksManager newManager = manager.loadFromFile("resources/file.csv",
+                "resources/newFile.csv");
         System.out.println(newManager.history());
         System.out.println(manager.returnAllTask().size());
         System.out.println(manager.returnAllEpic().size());
