@@ -1,5 +1,8 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Task {
     private int id;
     private TaskType type;
@@ -7,6 +10,20 @@ public class Task {
     private Status status;
     private String description;
     private static final String NULL_STRING = "null";
+    private LocalDateTime startTime;
+    private Duration duration;
+
+    public Task(int id, TaskType type, String name, Status status, String description,
+                LocalDateTime startTime, Duration duration ) {
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
+
+    }
 
     public Task(int id, TaskType type, String name, Status status, String description) {
         this.type = type;
@@ -14,6 +31,9 @@ public class Task {
         this.description = description;
         this.id = id;
         this.status = status;
+        this.startTime = LocalDateTime.MAX;
+        this.duration = Duration.ZERO;
+
     }
 
     public Task(Task task) {
@@ -71,6 +91,26 @@ public class Task {
         return id;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,17 +132,21 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id + '\'' +
                 ", status='" + status + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + getEndTime() + '\'' +
                 '}';
     }
 
     public String asString() {
         return String.format(
-                "%s,%s,%s,%s,%s\n",
+                "%s;%s;%s;%s;%s;%s;%s\n",
                 id,
                 type,
                 name.isEmpty() ? NULL_STRING : name,
                 status,
-                description.isEmpty() ? NULL_STRING : description
+                description.isEmpty() ? NULL_STRING : description,
+                startTime,
+                getEndTime()
         );
     }
 }
