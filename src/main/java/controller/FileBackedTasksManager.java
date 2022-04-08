@@ -5,10 +5,7 @@ import model.*;
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static model.Status.*;
 import static model.TaskType.*;
@@ -206,8 +203,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 NULL_STRING.equals(fields[2]) ? "" : fields[2],
                 Status.valueOf(fields[3]),
                 NULL_STRING.equals(fields[4]) ? "" : fields[4],
-                LocalDateTime.parse(fields[5]),
-                Duration.between(LocalDateTime.parse(fields[5]), LocalDateTime.parse(fields[6]))
+                NULL_STRING.equals(fields[5]) ? null : LocalDateTime.parse(fields[5]),
+                NULL_STRING.equals(fields[5]) || NULL_STRING.equals(fields[6])? null :
+                        Duration.between(LocalDateTime.parse(fields[5]),
+                                LocalDateTime.parse(fields[6]))
         );
     }
 
@@ -219,8 +218,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 NULL_STRING.equals(fields[2]) ? "" : fields[2],
                 Status.valueOf(fields[3]),
                 NULL_STRING.equals(fields[4]) ? "" : fields[4],
-                LocalDateTime.parse(fields[5]),
-                Duration.between(LocalDateTime.parse(fields[5]), LocalDateTime.parse(fields[6])),
+                NULL_STRING.equals(fields[5]) ? null : LocalDateTime.parse(fields[5]),
+                NULL_STRING.equals(fields[5]) || NULL_STRING.equals(fields[6])? null :
+                        Duration.between(LocalDateTime.parse(fields[5]),
+                                LocalDateTime.parse(fields[6])),
                 Integer.parseInt(fields[7])
         );
     }
@@ -272,12 +273,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         SubTask secondSubTask = new SubTask(4, SUBTASK, "Sub Task2", DONE,
                 "Description sub task4", secondSubTaskTime, secondSubTaskDuration,
                 epic.getId());
-
+        Task task5 = new Task(5,TASK, "Task5", NEW,"Description task5");
+        Task task6 = new Task(6,TASK, "Task6", NEW,"Description task6");
 
         manager.addEpic(epic);
         manager.addSubTask(firstSubTask);
         manager.addSubTask(secondSubTask);
         manager.addTask(task);
+        manager.addTask(task5);
+        manager.addTask(task6);
         manager.findEpicById(2);
         manager.findSubTaskById(3);
         manager.findSubTaskById(4);
@@ -292,7 +296,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         System.out.println(newManager.returnAllTask().size());
         System.out.println(newManager.returnAllEpic().size());
-        System.out.println(newManager.taskPrioritized);
+        Set<Task> tasksTime = newManager.getPrioritizedTasks();
+            for (Task taskValue: tasksTime){
+                System.out.println(taskValue.getStartTime() );
+            }
     }
 
     private static class ManagerSaveException extends RuntimeException {

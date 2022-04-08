@@ -31,8 +31,11 @@ public class Task {
         this.description = description;
         this.id = id;
         this.status = status;
-        this.startTime = LocalDateTime.MAX;
-        this.duration = Duration.ZERO;
+        this.startTime = null;
+        this.duration = null;
+
+        /*this.startTime = LocalDateTime.MAX;
+        this.duration = Duration.ZERO;*/
 
     }
 
@@ -108,7 +111,10 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plus(duration);
+        if (startTime != null && duration != null){
+            return startTime.plus(duration);
+        }
+        return null;
     }
 
     @Override
