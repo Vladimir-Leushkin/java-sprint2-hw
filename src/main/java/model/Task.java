@@ -33,10 +33,6 @@ public class Task {
         this.status = status;
         this.startTime = null;
         this.duration = null;
-
-        /*this.startTime = LocalDateTime.MAX;
-        this.duration = Duration.ZERO;*/
-
     }
 
     public Task(Task task) {
