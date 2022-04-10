@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TaskTest {
 
-    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/test-file.csv");
+    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/TaskTest-file.csv");
     LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00,
             00);
     Duration taskDuration = Duration.ofHours(10);
-    Task task = new Task(1,TASK, "Task1", NEW,"Description task1", taskTime,
+    Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,
             taskDuration);
-    Task task2 = new Task(2,TASK, "Task2", NEW,"Description task2");
+    Task task2 = new Task(2, TASK, "Task2", NEW, "Description task2");
 
 
     @Test

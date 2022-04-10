@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
 
-    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/test-file.csv");
+    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/EpicTest-file.csv");
     Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
     LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
             0, 00);
@@ -31,7 +31,7 @@ class EpicTest {
 
 
     @Test
-    void EpicWithoutSubtask(){
+    void EpicWithoutSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -48,7 +48,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicWithNewSubtask(){
+    void EpicWithNewSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -64,6 +64,7 @@ class EpicTest {
         assertEquals(NEW, epicInManager.getStatus());
         assertArrayEquals(subTaskList.toArray(), epicInManager.getSubTasks().toArray());
     }
+
     @Test
     void EpicWithDoneSubtask() {
 
