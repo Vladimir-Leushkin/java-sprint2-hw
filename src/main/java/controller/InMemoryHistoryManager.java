@@ -66,7 +66,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
-    public void removeFirst(){
+    public void removeFirst() {
         Node current = head;
         remove(current.task.getId());
     }

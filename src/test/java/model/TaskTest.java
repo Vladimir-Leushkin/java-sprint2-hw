@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TaskTest {
 
-    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/TaskTest-file.csv");
+    final FileBackedTasksManager taskManager =
+            new FileBackedTasksManager("resources/TaskTest-file.csv");
     LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00,
             00);
     Duration taskDuration = Duration.ofHours(10);
@@ -25,7 +26,7 @@ class TaskTest {
 
 
     @Test
-    void addNewTask() {
+    void shouldAddNewTask() {
         //Подготовка
         taskManager.addTask(task);
 
@@ -45,7 +46,7 @@ class TaskTest {
     }
 
     @Test
-    void addNewTaskWithoutStartTime() {
+    void shouldAddNewTaskWithoutStartTime() {
         //Подготовка
         taskManager.addTask(task2);
 
@@ -59,7 +60,7 @@ class TaskTest {
     }
 
     @Test
-    void updateTaskWithoutStartTime() {
+    void shouldUpdateTaskWithoutStartTime() {
         //Подготовка
         taskManager.addTask(task2);
 

@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
 
-    final FileBackedTasksManager taskManager = new FileBackedTasksManager("resources/EpicTest-file.csv");
+    final FileBackedTasksManager taskManager =
+            new FileBackedTasksManager("resources/EpicTest-file.csv");
     Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
     LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
             0, 00);
@@ -31,7 +32,7 @@ class EpicTest {
 
 
     @Test
-    void EpicWithoutSubtask() {
+    void shouldNewEpicWithoutSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -48,7 +49,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicWithNewSubtask() {
+    void shouldNewEpicWithNewSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -66,7 +67,23 @@ class EpicTest {
     }
 
     @Test
-    void EpicWithDoneSubtask() {
+    void shouldNewEpicWithOneNewSubtask() {
+
+        //Подготовка
+        taskManager.addEpic(epic);
+        taskManager.addSubTask(firstSubTask);
+
+        //Исполнение
+        final int epicId = epic.getId();
+        Epic epicInManager = taskManager.findEpicById(epicId);
+        List<SubTask> subTaskList = epicInManager.getSubTasks();
+
+        //Проверка
+        assertEquals(firstSubTask.toString(), subTaskList.get(0).toString());
+    }
+
+    @Test
+    void shouldNewEpicWithDoneSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -86,7 +103,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicWithNewAndDoneSubtask() {
+    void shouldNewEpicWithNewAndDoneSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -106,7 +123,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicWithInProgressSubtask() {
+    void shouldNewEpicWithInProgressSubtask() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -126,7 +143,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicTime() {
+    void shouldNewEpicTime() {
 
         //Подготовка
         taskManager.addEpic(epic);
@@ -146,7 +163,7 @@ class EpicTest {
     }
 
     @Test
-    void EpicDeleteAllSubTask() {
+    void shouldNewEpicDeleteAllSubTask() {
 
         //Подготовка
         epic.addSubTask(firstSubTask);

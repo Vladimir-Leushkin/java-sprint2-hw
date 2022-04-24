@@ -74,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.containsKey(task.getId())) {
             return;
         }
-        if (checkTaskTime(task)){
+        if (checkTaskTime(task)) {
             System.out.println("Время занято другой задачей");
             return;
         }
@@ -94,7 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (!epics.containsKey(subTask.getEpicId())) {
             return;
         }
-        if (checkTaskTime(subTask)){
+        if (checkTaskTime(subTask)) {
             System.out.println("Время занято другой задачей");
             return;
         }
@@ -119,12 +119,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         final Task saveTask = tasks.get(task.getId());
+        taskPrioritized.remove(saveTask);
         if (saveTask == null) {
             System.out.println("Такая задача не существует");
+            //throw new IllegalArgumentException("Такая задача не существует");
             return;
         }
-        taskPrioritized.remove(saveTask);
-        if (checkTaskTime(task)){
+        if (checkTaskTime(task)) {
             System.out.println("Время занято другой задачей");
             taskPrioritized.add(saveTask);
             return;
@@ -142,15 +143,15 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         taskPrioritized.remove(saveSubTask);
-        if (checkTaskTime(newSubTask)){
+        if (checkTaskTime(newSubTask)) {
             System.out.println("Время занято другой задачей");
             taskPrioritized.add(saveSubTask);
             return;
         }
-            subTasks.put(newSubTask.getId(), newSubTask);
-            epic.deleteSubTaskByEpic(saveSubTask);
-            epic.addSubTask(newSubTask);
-            taskPrioritized.add(newSubTask);
+        subTasks.put(newSubTask.getId(), newSubTask);
+        epic.deleteSubTaskByEpic(saveSubTask);
+        epic.addSubTask(newSubTask);
+        taskPrioritized.add(newSubTask);
     }
 
     @Override
@@ -248,7 +249,7 @@ public class InMemoryTaskManager implements TaskManager {
     Comparator<Task> startTimeComparator = new Comparator<>() {
         @Override
         public int compare(Task o1, Task o2) {
-            if (o1.getStartTime() != null && o2.getStartTime() != null){
+            if (o1.getStartTime() != null && o2.getStartTime() != null) {
                 return o1.getStartTime().compareTo(o2.getStartTime());
             }
             return o1.getId() - o2.getId();
@@ -257,27 +258,27 @@ public class InMemoryTaskManager implements TaskManager {
 
     Set<Task> taskPrioritized = new TreeSet<>(startTimeComparator);
 
-    public boolean checkTaskTime(Task task){
+    public boolean checkTaskTime(Task task) {
         Set<Task> tasksTime = getPrioritizedTasks();
         boolean checkTime = false;
 
-            try {
-                for (Task taskValue: tasksTime){
-                    if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
-                            task.getStartTime().isBefore(taskValue.getEndTime())) ||
-                            (task.getEndTime().isAfter(taskValue.getStartTime()) &&
-                                    task.getEndTime().isBefore(taskValue.getEndTime())) ||
-                            (taskValue.getStartTime().isAfter(task.getStartTime()) &&
-                                    taskValue.getStartTime().isBefore(task.getEndTime())) ||
-                            (taskValue.getEndTime().isAfter(task.getStartTime()) &&
-                                    taskValue.getEndTime().isBefore(task.getEndTime()))) {
-                        checkTime = true;
-                    }
+        try {
+            for (Task taskValue : tasksTime) {
+                if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
+                        task.getStartTime().isBefore(taskValue.getEndTime())) ||
+                        (task.getEndTime().isAfter(taskValue.getStartTime()) &&
+                                task.getEndTime().isBefore(taskValue.getEndTime())) ||
+                        (taskValue.getStartTime().isAfter(task.getStartTime()) &&
+                                taskValue.getStartTime().isBefore(task.getEndTime())) ||
+                        (taskValue.getEndTime().isAfter(task.getStartTime()) &&
+                                taskValue.getEndTime().isBefore(task.getEndTime()))) {
+                    checkTime = true;
                 }
-
-            }catch (NullPointerException exp){
-                checkTime = false;
             }
+
+        } catch (NullPointerException exp) {
+            checkTime = false;
+        }
         return checkTime;
     }
 }
