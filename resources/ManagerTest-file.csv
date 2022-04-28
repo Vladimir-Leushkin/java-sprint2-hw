@@ -1,0 +1,6 @@
+5;TASK;Task2;NEW;Description task2;null;null
+2;EPIC;Epic2;Description epic2
+3;SUBTASK;SubTask3;NEW;Description subtask3;2022-01-02T00:00;2022-01-02T11:00;2
+4;SUBTASK;SubTask4;NEW;Description subtask4;2022-01-03T00:00;2022-01-03T12:00;2
+
+5;2;3;4;

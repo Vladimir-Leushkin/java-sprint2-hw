@@ -72,15 +72,13 @@ public class InMemoryTaskManager implements TaskManager {
         final Task value = new Task(task.getId(), task.getType(), task.getName(), task.getStatus(),
                 task.getDescription(), task.getStartTime(), task.getDuration());
         if (tasks.containsKey(task.getId())) {
-            return;
+            throw new IllegalArgumentException("Такая задача уже существует");
         }
         if (checkTaskTime(task)) {
-            System.out.println("Время занято другой задачей");
-            return;
+            throw new IllegalArgumentException("Время занято другой задачей");
         }
         tasks.put(task.getId(), value);
         taskPrioritized.add(value);
-
     }
 
     @Override
@@ -89,14 +87,13 @@ public class InMemoryTaskManager implements TaskManager {
                 subTask.getStatus(), subTask.getDescription(), subTask.getStartTime(),
                 subTask.getDuration(), subTask.getEpicId());
         if (subTasks.containsKey(subTask.getId())) {
-            return;
+            throw new IllegalArgumentException("Такая подзадача уже существует");
         }
         if (!epics.containsKey(subTask.getEpicId())) {
-            return;
+            throw new IllegalArgumentException("Такой эпик не существует");
         }
         if (checkTaskTime(subTask)) {
-            System.out.println("Время занято другой задачей");
-            return;
+            throw new IllegalArgumentException("Время занято другой задачей");
         }
         subTasks.put(value.getId(), value);
         final Epic epic = epics.get(subTask.getEpicId());
@@ -110,7 +107,7 @@ public class InMemoryTaskManager implements TaskManager {
         final Epic value = new Epic(epic.getId(), epic.getType(), epic.getName(),
                 epic.getDescription());
         if (epics.containsKey(epic.getId())) {
-            return;
+            throw new IllegalArgumentException("Такой эпик уже существует");
         } else {
             epics.put(epic.getId(), value);
         }
@@ -119,16 +116,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         final Task saveTask = tasks.get(task.getId());
-        taskPrioritized.remove(saveTask);
         if (saveTask == null) {
-            System.out.println("Такая задача не существует");
-            //throw new IllegalArgumentException("Такая задача не существует");
-            return;
+            throw new IllegalArgumentException("Такая задача не существует");
         }
+        taskPrioritized.remove(saveTask);
         if (checkTaskTime(task)) {
-            System.out.println("Время занято другой задачей");
             taskPrioritized.add(saveTask);
-            return;
+            throw new IllegalArgumentException("Время занято другой задачей");
         }
         tasks.put(task.getId(), task);
         taskPrioritized.add(task);
@@ -139,14 +133,12 @@ public class InMemoryTaskManager implements TaskManager {
         final SubTask saveSubTask = subTasks.get(newSubTask.getId());
         final Epic epic = epics.get(newSubTask.getEpicId());
         if (saveSubTask == null) {
-            System.out.println("Такая подзадача не существует");
-            return;
+            throw new IllegalArgumentException("Такая подзадача не существует");
         }
         taskPrioritized.remove(saveSubTask);
         if (checkTaskTime(newSubTask)) {
-            System.out.println("Время занято другой задачей");
             taskPrioritized.add(saveSubTask);
-            return;
+            throw new IllegalArgumentException("Время занято другой задачей");
         }
         subTasks.put(newSubTask.getId(), newSubTask);
         epic.deleteSubTaskByEpic(saveSubTask);
@@ -163,7 +155,7 @@ public class InMemoryTaskManager implements TaskManager {
             newEpic.getStatus();
             saveEpic.deleteAllSubTaskByEpic();
         } else {
-            System.out.println("Такой эпик не существует");
+            throw new IllegalArgumentException("Такой эпик не существует");
         }
     }
 
@@ -173,7 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
             tasks.remove(id);
             history1.remove(id);
         } else {
-            System.out.println("Такая задача не существует");
+            throw new IllegalArgumentException("Такая задача не существует");
         }
     }
 
@@ -194,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.remove(id);
             history1.remove(id);
         } else {
-            System.out.println("Такая задача не существует");
+            throw new IllegalArgumentException("Такая подзадача не существует");
         }
     }
 
@@ -221,7 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
             epics.remove(id);
             history1.remove(id);
         } else {
-            System.out.println("Такая задача не существует");
+            throw new IllegalArgumentException("Такой эпик не существует");
         }
     }
 
@@ -271,12 +263,15 @@ public class InMemoryTaskManager implements TaskManager {
                         (taskValue.getStartTime().isAfter(task.getStartTime()) &&
                                 taskValue.getStartTime().isBefore(task.getEndTime())) ||
                         (taskValue.getEndTime().isAfter(task.getStartTime()) &&
-                                taskValue.getEndTime().isBefore(task.getEndTime()))) {
+                                taskValue.getEndTime().isBefore(task.getEndTime())) ||
+                        task.getStartTime() == taskValue.getStartTime() ||
+                        task.getEndTime() == taskValue.getEndTime()) {
                     checkTime = true;
                 }
             }
 
         } catch (NullPointerException exp) {
+            System.out.println("Время занято другой задачей");
             checkTime = false;
         }
         return checkTime;

@@ -24,21 +24,17 @@ class TaskTest {
             taskDuration);
     Task task2 = new Task(2, TASK, "Task2", NEW, "Description task2");
 
-
     @Test
     void shouldAddNewTask() {
         //Подготовка
         taskManager.addTask(task);
-
         //Исполнение
         final int taskId = task.getId();
         final Task savedTask = taskManager.findTaskById(taskId);
         final List<Task> tasks = taskManager.returnAllTask();
-
         //Проверка
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
-
         assertNotNull(tasks, "Задачи на возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
         assertEquals(task, tasks.get(0), "Задачи не совпадают.");
@@ -49,11 +45,9 @@ class TaskTest {
     void shouldAddNewTaskWithoutStartTime() {
         //Подготовка
         taskManager.addTask(task2);
-
         //Исполнение
         final int taskId = task2.getId();
         final Task savedTask = taskManager.findTaskById(taskId);
-
         //Проверка
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task2, savedTask, "Задачи не совпадают.");
@@ -63,7 +57,6 @@ class TaskTest {
     void shouldUpdateTaskWithoutStartTime() {
         //Подготовка
         taskManager.addTask(task2);
-
         //Исполнение
         task2.setName("task22");
         task2.setDescription("Description task22");
@@ -73,7 +66,6 @@ class TaskTest {
         taskManager.updateTask(task2);
         final int taskId = task2.getId();
         final Task savedTask = new Task(taskManager.findTaskById(taskId));
-
         //Проверка
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task2, savedTask, "Задачи не совпадают.");

@@ -30,18 +30,14 @@ class EpicTest {
             "Description sub task4", secondSubTaskTime, secondSubTaskDuration,
             epic.getId());
 
-
     @Test
     void shouldNewEpicWithoutSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
-
         //Исполнение
         List<SubTask> subTaskList = epicInManager.getSubTasks();
-
         //Проверка
         assertFalse(subTaskList.size() > 0);
         assertEquals(epic, epicInManager);
@@ -50,17 +46,14 @@ class EpicTest {
 
     @Test
     void shouldNewEpicWithNewSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
         taskManager.addSubTask(secondSubTask);
-
         //Исполнение
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
         List<SubTask> subTaskList = epicInManager.getSubTasks();
-
         //Проверка
         assertEquals(NEW, epicInManager.getStatus());
         assertArrayEquals(subTaskList.toArray(), epicInManager.getSubTasks().toArray());
@@ -68,28 +61,23 @@ class EpicTest {
 
     @Test
     void shouldNewEpicWithOneNewSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
-
         //Исполнение
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
         List<SubTask> subTaskList = epicInManager.getSubTasks();
-
         //Проверка
         assertEquals(firstSubTask.toString(), subTaskList.get(0).toString());
     }
 
     @Test
     void shouldNewEpicWithDoneSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
         taskManager.addSubTask(secondSubTask);
-
         //Исполнение
         firstSubTask.setStatus(DONE);
         taskManager.updateSubTask(firstSubTask);
@@ -97,19 +85,16 @@ class EpicTest {
         taskManager.updateSubTask(secondSubTask);
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
-
         //Проверка
         assertEquals(DONE, epicInManager.getStatus());
     }
 
     @Test
     void shouldNewEpicWithNewAndDoneSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
         taskManager.addSubTask(secondSubTask);
-
         //Исполнение
         firstSubTask.setStatus(NEW);
         taskManager.updateSubTask(firstSubTask);
@@ -117,19 +102,16 @@ class EpicTest {
         taskManager.updateSubTask(secondSubTask);
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
-
         //Проверка
         assertEquals(IN_PROGRESS, epicInManager.getStatus());
     }
 
     @Test
     void shouldNewEpicWithInProgressSubtask() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
         taskManager.addSubTask(secondSubTask);
-
         //Исполнение
         firstSubTask.setStatus(IN_PROGRESS);
         taskManager.updateSubTask(firstSubTask);
@@ -137,25 +119,21 @@ class EpicTest {
         taskManager.updateSubTask(secondSubTask);
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
-
         //Проверка
         assertEquals(IN_PROGRESS, epicInManager.getStatus());
     }
 
     @Test
     void shouldNewEpicTime() {
-
         //Подготовка
         taskManager.addEpic(epic);
         taskManager.addSubTask(firstSubTask);
         taskManager.addSubTask(secondSubTask);
         Duration epicDuration = Duration.between(firstSubTask.getStartTime(),
                 secondSubTask.getEndTime());
-
         //Исполнение
         final int epicId = epic.getId();
         Epic epicInManager = taskManager.findEpicById(epicId);
-
         //Проверка
         assertEquals(firstSubTask.getStartTime(), epicInManager.getStartTime());
         assertEquals(secondSubTask.getEndTime(), epicInManager.getEndTime());
@@ -164,15 +142,12 @@ class EpicTest {
 
     @Test
     void shouldNewEpicDeleteAllSubTask() {
-
         //Подготовка
         epic.addSubTask(firstSubTask);
         epic.addSubTask(secondSubTask);
-
         //Исполнение
         epic.deleteAllSubTaskByEpic();
         List<SubTask> subTaskList = epic.getSubTasks();
-
         //Проверка
         assertTrue(subTaskList.size() == 0);
     }

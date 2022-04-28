@@ -253,56 +253,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return taskIdInHistory;
     }
 
-    /*public static void main(String[] args) {
-        final FileBackedTasksManager manager = new FileBackedTasksManager("resources/file1.csv");
-        LocalDateTime taskTime = LocalDateTime.of(2022, 01, 01, 0,
-                00);
-        Duration taskDuration = Duration.ofHours(48);
-        Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,
-                taskDuration);
-        Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
-        LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
-                0, 00);
-        Duration firstSubTaskDuration = Duration.ofHours(11);
-        SubTask firstSubTask = new SubTask(3, SUBTASK, "Sub Task1", DONE,
-                "Description sub task3", firstSubTaskTime, firstSubTaskDuration,
-                epic.getId());
-        LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
-                00, 00);
-        Duration secondSubTaskDuration = Duration.ofHours(12);
-        SubTask secondSubTask = new SubTask(4, SUBTASK, "Sub Task2", DONE,
-                "Description sub task4", secondSubTaskTime, secondSubTaskDuration,
-                epic.getId());
-        Task task5 = new Task(5, TASK, "Task5", NEW, "Description task5");
-        Task task6 = new Task(6, TASK, "Task6", NEW, "Description task6");
-
-        manager.addEpic(epic);
-        manager.addSubTask(firstSubTask);
-        manager.addSubTask(secondSubTask);
-        manager.addTask(task);
-        //manager.updateTask(task5);
-        manager.addTask(task5);
-        manager.addTask(task6);
-        manager.findEpicById(2);
-        manager.findSubTaskById(3);
-        manager.findSubTaskById(4);
-
-        final FileBackedTasksManager newManager = manager.loadFromFile("resources/file1.csv",
-                "resources/newFile.csv");
-        System.out.println(newManager.history());
-        System.out.println(newManager.findTaskById(1));
-
-        System.out.println(newManager.findEpicById(2));
-        System.out.println(newManager.findSubTaskById(3));
-
-        System.out.println(newManager.returnAllTask().size());
-        System.out.println(newManager.returnAllEpic().size());
-        Set<Task> tasksTime = newManager.getPrioritizedTasks();
-        for (Task taskValue : tasksTime) {
-            System.out.println(taskValue.getStartTime());
-        }
-    }*/
-
     private static class ManagerSaveException extends RuntimeException {
 
         private ManagerSaveException(IOException e) {
