@@ -98,33 +98,33 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public SubTask findSubTaskById(int id) {
-        final SubTask subTask = subTasks.get(id);
+        final SubTask subTask = getSubTasks().get(id);
         if (subTask == null) {
             return null;
         }
-        history1.add(subTask);
+        history().add(subTask);
         save();
         return subTask;
     }
 
     @Override
     public Task findTaskById(int id) {
-        final Task task = tasks.get(id);
+        final Task task = getTasks().get(id);
         if (task == null) {
             return null;
         }
-        history1.add(task);
+        history().add(task);
         save();
         return task;
     }
 
     @Override
     public Epic findEpicById(int id) {
-        final Epic epic = epics.get(id);
+        final Epic epic = getEpics().get(id);
         if (epic == null) {
             return null;
         }
-        history1.add(epic);
+        history().add(epic);
         save();
         return epic;
     }
@@ -133,17 +133,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
                 file))) {
-            for (Task task : tasks.values()) {
+            for (Task task : getTasks().values()) {
                 bufferedWriter.write(task.asString());
             }
-            for (Epic epic : epics.values()) {
+            for (Epic epic : getEpics().values()) {
                 bufferedWriter.write(epic.asString());
             }
-            for (SubTask subTask : subTasks.values()) {
+            for (SubTask subTask : getSubTasks().values()) {
                 bufferedWriter.write(subTask.asString());
             }
             bufferedWriter.write(System.lineSeparator());
-            bufferedWriter.write(historyToString(history1.getHistory()));
+            bufferedWriter.write(historyToString(history()));
         } catch (IOException e) {
             throw new ManagerSaveException(e);
         }
@@ -174,9 +174,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     } else {
                         List<Integer> history = historyFromString(value);
                         for (Integer id : history) {
-                            history1.add(map.get(id));
+                            history().add(map.get(id));
                         }
-                        for (Task task : history1.getHistory()) {
+                        for (Task task : history()) {
                             if (task instanceof SubTask) {
                                 manager.findSubTaskById(task.getId());
                             } else if (task instanceof Epic) {

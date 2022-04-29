@@ -7,14 +7,39 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HistoryManager history1 = new InMemoryHistoryManager();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HistoryManager historyManager = new InMemoryHistoryManager();
 
 
     public InMemoryTaskManager() {
     }
+
+    public HashMap<Integer, Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(HashMap<Integer, Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public HashMap<Integer, SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(HashMap<Integer, SubTask> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public HashMap<Integer, Epic> getEpics() {
+        return epics;
+    }
+
+    public void setEpics(HashMap<Integer, Epic> epics) {
+        this.epics = epics;
+    }
+
 
     @Override
     public List<Task> returnAllTask() {
@@ -39,11 +64,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task findTaskById(int id) {
-        final Task task = tasks.get(id);
+        final Task task = getSubTasks().get(id);
         if (task == null) {
             return null;
         }
-        history1.add(task);
+        historyManager.add(task);
         return task;
     }
 
@@ -53,7 +78,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTask == null) {
             return null;
         }
-        history1.add(subTask);
+        historyManager.add(subTask);
         return subTask;
     }
 
@@ -63,7 +88,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             return null;
         }
-        history1.add(epic);
+        historyManager.add(epic);
         return epic;
     }
 
@@ -163,7 +188,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
-            history1.remove(id);
+            historyManager.remove(id);
         } else {
             throw new IllegalArgumentException("Такая задача не существует");
         }
@@ -172,7 +197,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         for (Integer id : tasks.keySet()) {
-            history1.remove(id);
+            historyManager.remove(id);
         }
         tasks.clear();
     }
@@ -184,7 +209,7 @@ public class InMemoryTaskManager implements TaskManager {
             final Epic epic = epics.get(subTask.getEpicId());
             epic.getSubTasks().remove(subTask);
             subTasks.remove(id);
-            history1.remove(id);
+            historyManager.remove(id);
         } else {
             throw new IllegalArgumentException("Такая подзадача не существует");
         }
@@ -193,7 +218,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllSubTasks() {
         for (Integer id : subTasks.keySet()) {
-            history1.remove(id);
+            historyManager.remove(id);
         }
         subTasks.clear();
         for (Epic epic : epics.values()) {
@@ -207,11 +232,11 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic != null) {
             for (SubTask subTaskByEpic : epic.getSubTasks()) {
                 subTasks.remove(subTaskByEpic.getId());
-                history1.remove(subTaskByEpic.getId());
+                historyManager.remove(subTaskByEpic.getId());
             }
             epic.deleteAllSubTaskByEpic();
             epics.remove(id);
-            history1.remove(id);
+            historyManager.remove(id);
         } else {
             throw new IllegalArgumentException("Такой эпик не существует");
         }
@@ -220,10 +245,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllEpics() {
         for (Integer id : epics.keySet()) {
-            history1.remove(id);
+            historyManager.remove(id);
         }
         for (Integer id : subTasks.keySet()) {
-            history1.remove(id);
+            historyManager.remove(id);
         }
         epics.clear();
         subTasks.clear();
@@ -231,7 +256,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> history() {
-        return history1.getHistory();
+        return historyManager.getHistory();
     }
 
     public TreeSet<Task> getPrioritizedTasks() {
