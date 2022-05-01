@@ -3,6 +3,7 @@ package controller;
 import model.Epic;
 import model.SubTask;
 import model.Task;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -17,6 +18,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         private final FileBackedTasksManager fileTaskManager =
                 new FileBackedTasksManager("resources/ManagerTest-file.csv");
 
+    @BeforeEach
+    public void beforeEach() {
+        fileTaskManager.deleteAllTasks();
+        fileTaskManager.deleteAllEpics();
+    }
+
     @Test
     void shouldReturnListAllTask() {
         //Подготовка
@@ -24,10 +31,15 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.addTask(task2);
         //Исполнение
         final List<Task> allTask = fileTaskManager.returnAllTask();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewTask = newFileTaskManager.returnAllTask();
         //Проверка
         assertNotNull(allTask, "Список пуст");
         assertEquals(2, allTask.size(), "Неверное количество задач.");
         assertEquals(task, allTask.get(0), "Задачи не совпадают.");
+        assertArrayEquals(allTask.toArray(), allNewTask.toArray());
+
     }
 
     @Test
@@ -35,8 +47,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         final List<Task> allTask = fileTaskManager.returnAllTask();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewTask = newFileTaskManager.returnAllTask();
         //Проверка
         assertEquals(0, allTask.size(), "Список не пуст");
+        assertArrayEquals(allTask.toArray(), allNewTask.toArray());
     }
 
     @Test
@@ -45,10 +61,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.addEpic(epic);
         //Исполнение
         final List<Task> allEpic = fileTaskManager.returnAllEpic();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewEpic = newFileTaskManager.returnAllEpic();
         //Проверка
         assertNotNull(allEpic, "Список пуст");
         assertEquals(1, allEpic.size(), "Неверное количество задач.");
         assertEquals(epic, allEpic.get(0), "Задачи не совпадают.");
+        assertArrayEquals(allEpic.toArray(), allNewEpic.toArray());
     }
 
     @Test
@@ -56,8 +76,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         final List<Task> allEpic = fileTaskManager.returnAllEpic();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewEpic = newFileTaskManager.returnAllEpic();
         //Проверка
         assertEquals(0, allEpic.size(), "Список не пуст");
+        assertArrayEquals(allEpic.toArray(), allNewEpic.toArray());
     }
 
     @Test
@@ -69,10 +93,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int epicId = epic.getId();
         //Исполнение
         final List<SubTask> allSubTask = fileTaskManager.returnAllSubTasksByEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<SubTask> allNewSubTask = newFileTaskManager.returnAllSubTasksByEpic(epicId);
         //Проверка
         assertNotNull(allSubTask, "Список пуст");
         assertEquals(2, allSubTask.size(), "Неверное количество задач.");
         assertEquals(firstSubTask, allSubTask.get(0), "Задачи не совпадают.");
+        assertArrayEquals(allSubTask.toArray(), allNewSubTask.toArray());
     }
 
     @Test
@@ -82,8 +110,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int epicId = epic.getId();
         //Исполнение
         final List<SubTask> allSubTask = fileTaskManager.returnAllSubTasksByEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<SubTask> allNewSubTask = newFileTaskManager.returnAllSubTasksByEpic(epicId);
         //Проверка
         assertEquals(0, allSubTask.size(), "Список не пуст");
+        assertArrayEquals(allSubTask.toArray(), allNewSubTask.toArray());
     }
 
     @Test
@@ -92,8 +124,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         fileTaskManager.addTask(task);
         final int taskId = task.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(task, fileTaskManager.findTaskById(taskId));
+        assertEquals(task, newFileTaskManager.findTaskById(taskId));
     }
 
     @Test
@@ -101,8 +136,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         final int taskId = task.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(null, fileTaskManager.findTaskById(taskId));
+        assertEquals(null, newFileTaskManager.findTaskById(taskId));
     }
 
     @Test
@@ -112,8 +150,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.addSubTask(firstSubTask);
         //Исполнение
         final int subTaskId = firstSubTask.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(firstSubTask, fileTaskManager.findSubTaskById(subTaskId));
+        assertEquals(firstSubTask, newFileTaskManager.findSubTaskById(subTaskId));
     }
 
     @Test
@@ -121,8 +162,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         final int subTaskId = firstSubTask.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(null, fileTaskManager.findSubTaskById(subTaskId));
+        assertEquals(null, newFileTaskManager.findSubTaskById(subTaskId));
     }
 
     @Test
@@ -131,8 +175,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         fileTaskManager.addEpic(epic);
         final int epicId = epic.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(epic, fileTaskManager.findEpicById(epicId));
+        assertEquals(epic, newFileTaskManager.findEpicById(epicId));
     }
 
     @Test
@@ -140,8 +187,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         final int epicId = epic.getId();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertEquals(null, fileTaskManager.findEpicById(epicId));
+        assertEquals(null, newFileTaskManager.findEpicById(epicId));
     }
 
     @Test
@@ -152,12 +202,16 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int taskId = task.getId();
         final Task savedTask = fileTaskManager.findTaskById(taskId);
         final List<Task> tasks = fileTaskManager.returnAllTask();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> newTasks= newFileTaskManager.returnAllTask();
         //Проверка
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
         assertNotNull(tasks, "Задачи не возвращаются.");
         assertEquals(1, tasks.size(), "Неверное количество задач.");
         assertEquals(task, tasks.get(0), "Задачи не совпадают.");
+        assertArrayEquals(tasks.toArray(), newTasks.toArray());
     }
 
     @Test
@@ -202,12 +256,16 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int epicId = epic.getId();
         final Task savedEpic = fileTaskManager.findEpicById(epicId);
         final List<Task> epics = fileTaskManager.returnAllEpic();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> newEpics= newFileTaskManager.returnAllEpic();
         //Проверка
         assertNotNull(savedEpic, "Задача не найдена.");
         assertEquals(epic, savedEpic, "Задачи не совпадают.");
         assertNotNull(epics, "Задачи не возвращаются.");
         assertEquals(1, epics.size(), "Неверное количество задач.");
         assertEquals(epic, epics.get(0), "Задачи не совпадают.");
+        assertArrayEquals(epics.toArray(), newEpics.toArray());
     }
 
     @Test
@@ -239,12 +297,16 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int firstSubtaskId = firstSubTask.getId();
         final SubTask savedSubTaskFirst = fileTaskManager.findSubTaskById(firstSubtaskId);
         final List<SubTask> subTasks = fileTaskManager.returnAllSubTasksByEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<SubTask> newSubTasks = newFileTaskManager.returnAllSubTasksByEpic(epicId);
         //Проверка
         assertNotNull(savedSubTaskFirst, "Задача не найдена.");
         assertEquals(firstSubTask, savedSubTaskFirst, "Задачи не совпадают.");
         assertNotNull(subTasks, "Задачи не возвращаются.");
         assertEquals(2, subTasks.size(), "Неверное количество задач.");
         assertEquals(firstSubTask, subTasks.get(0), "Задачи не совпадают.");
+        assertArrayEquals(subTasks.toArray(), newSubTasks.toArray());
     }
 
     @Test
@@ -313,9 +375,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.updateTask(task);
         final int taskId = task.getId();
         final Task savedTask = fileTaskManager.findTaskById(taskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
+        assertEquals(task, newFileTaskManager.findTaskById(taskId),"Задачи не совпадают.");
     }
 
     @Test
@@ -365,9 +430,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.updateEpic(epic);
         final int epicId = epic.getId();
         final Task savedEpic = fileTaskManager.findEpicById(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNotNull(savedEpic, "Задача не найдена.");
         assertEquals(epic, savedEpic, "Задачи не совпадают.");
+        assertEquals(epic, newFileTaskManager.findEpicById(epicId), "Задачи не совпадают.");
     }
 
     @Test
@@ -398,9 +466,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         firstSubTask.setName("updateSubTask");
         fileTaskManager.updateSubTask(firstSubTask);
         final SubTask savedSubTaskFirst = fileTaskManager.findSubTaskById(firstSubtaskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNotNull(savedSubTaskFirst, "Задача не найдена.");
         assertEquals(firstSubTask, savedSubTaskFirst, "Задачи не совпадают.");
+        assertEquals(firstSubTask, newFileTaskManager.findSubTaskById(firstSubtaskId),
+                "Задачи не совпадают.");
     }
 
     @Test
@@ -451,8 +523,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         final int taskId = task.getId();
         fileTaskManager.deleteTask(taskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNull(fileTaskManager.findTaskById(taskId), "Задача не удалена.");
+        assertNull(newFileTaskManager.findTaskById(taskId), "Задача не удалена.");
     }
 
     @Test
@@ -480,8 +555,11 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         final int firstSubtaskId = firstSubTask.getId();
         fileTaskManager.deleteSubTask(firstSubtaskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNull(fileTaskManager.findSubTaskById(firstSubtaskId), "Задача не удалена.");
+        assertNull(newFileTaskManager.findSubTaskById(firstSubtaskId), "Задача не удалена.");
 
     }
 
@@ -511,10 +589,13 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         final int epicId = epic.getId();
         fileTaskManager.deleteEpic(epicId);
-        final List<SubTask> allSubTasks = fileTaskManager.returnAllSubTasksByEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertNull(fileTaskManager.findEpicById(epicId), "Задача не удалена.");
         assertNull(fileTaskManager.returnAllSubTasksByEpic(epicId));
+        assertNull(newFileTaskManager.findEpicById(epicId), "Задача не удалена.");
+        assertNull(newFileTaskManager.returnAllSubTasksByEpic(epicId));
 
     }
 
@@ -543,8 +624,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Исполнение
         fileTaskManager.deleteAllTasks();
         final List<Task> allTask = fileTaskManager.returnAllTask();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewTask = newFileTaskManager.returnAllTask();
         //Проверка
-        assertTrue(allTask.size() == 0);
+        assertEquals(0, allTask.size());
+        assertEquals(0, allNewTask.size());
 
     }
 
@@ -558,8 +643,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int epicId = epic.getId();
         fileTaskManager.deleteAllSubTasks();
         final List<SubTask> subTasks = fileTaskManager.returnAllSubTasksByEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<SubTask> newSubTasks = newFileTaskManager.returnAllSubTasksByEpic(epicId);
         //Проверка
-        assertTrue(subTasks.size() == 0);
+        assertEquals(0, subTasks.size());
+        assertEquals(0, newSubTasks.size());
 
     }
 
@@ -575,9 +664,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         final int epicId = epic.getId();
         fileTaskManager.deleteAllEpics();
         final List<Task> allEpics = fileTaskManager.returnAllEpic();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> allNewEpics = fileTaskManager.returnAllEpic();
         //Проверка
-        assertTrue(allEpics.size() == 0);
-        assertNull(fileTaskManager.returnAllSubTasksByEpic(epicId), "Задачи не удалены.");
+        assertEquals(0, allEpics.size());
+        assertNull(fileTaskManager.returnAllSubTasksByEpic(epicId));
+        assertEquals(0, newFileTaskManager.returnAllEpic().size());
+        assertNull(newFileTaskManager.returnAllSubTasksByEpic(epicId));
 
     }
 
@@ -586,8 +680,12 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         //Подготовка
         //Исполнение
         List<Task> history = fileTaskManager.history();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        List<Task> newHistory = fileTaskManager.history();
         //Проверка
-        assertTrue(history.size() == 0);
+        assertEquals(0, history.size());
+        assertEquals(0, newHistory.size());
     }
 
     @Test
@@ -604,6 +702,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findEpicById(epicId);
         fileTaskManager.findSubTaskById(subTaskId);
         final List<Task> saveHistory = fileTaskManager.history();
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
+        final List<Task> saveNewHistory = newFileTaskManager.history();
         //Проверка
         assertNotNull(fileTaskManager.history(), "Задачи не добавляются.");
         assertEquals(task, saveHistory.get(0),
@@ -612,6 +713,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
                 "Задачи не совпадают.");
         assertEquals(firstSubTask, fileTaskManager.history().get(2),
                 "Задачи не совпадают.");
+        assertArrayEquals(saveHistory.toArray(), saveNewHistory.toArray());
     }
 
     @Test
@@ -634,12 +736,16 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findSubTaskById(firstSubTaskId);
         fileTaskManager.findSubTaskById(secondSubTaskId);
         fileTaskManager.findTaskById(taskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertTrue(fileTaskManager.history().size() == 5);
         assertEquals(task2, fileTaskManager.history().get(0),
                 "Задачи не совпадают.");
         assertEquals(task, fileTaskManager.history().get(4),
                 "Задачи не совпадают.");
+        assertArrayEquals(fileTaskManager.history().toArray(),
+                newFileTaskManager.history().toArray());
     }
 
     @Test
@@ -662,10 +768,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findSubTaskById(firstSubTaskId);
         fileTaskManager.findSubTaskById(secondSubTaskId);
         fileTaskManager.deleteTask(taskId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertTrue(fileTaskManager.history().size() == 4);
         assertNotEquals(task, fileTaskManager.history().get(0),
                 "Задачи совпадают.");
+        assertArrayEquals(fileTaskManager.history().toArray(),
+                newFileTaskManager.history().toArray());
     }
 
     @Test
@@ -688,10 +798,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findTaskById(taskId);
         fileTaskManager.findTaskById(task2Id);
         fileTaskManager.deleteEpic(epicId);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertTrue(fileTaskManager.history().size() == 2);
         assertNotEquals(epic, fileTaskManager.history().get(0),
                 "Задачи совпадают.");
+        assertArrayEquals(fileTaskManager.history().toArray(),
+                newFileTaskManager.history().toArray());
     }
 
     @Test
@@ -714,10 +828,14 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findTaskById(taskId);
         fileTaskManager.findTaskById(task2Id);
         fileTaskManager.deleteTask(task2Id);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertTrue(fileTaskManager.history().size() == 4);
         assertNotEquals(task2, fileTaskManager.history().get(3),
                 "Задачи совпадают.");
+        assertArrayEquals(fileTaskManager.history().toArray(),
+                newFileTaskManager.history().toArray());
     }
 
     @Test
@@ -764,29 +882,29 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findTaskById(task9Id);
         fileTaskManager.findTaskById(task10Id);
         fileTaskManager.findTaskById(task11Id);
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
         assertTrue(fileTaskManager.history().size() == 10);
         assertNotEquals(epic, fileTaskManager.history().get(0),
                 "Задачи совпадают.");
+        assertArrayEquals(fileTaskManager.history().toArray(),
+                newFileTaskManager.history().toArray());
     }
 
     @Test
     void shouldCreateEmptyManagerFileBackedTasksManager() {
         //Подготовка
-        fileTaskManager.deleteAllTasks();
-        fileTaskManager.deleteAllSubTasks();
-        fileTaskManager.deleteAllEpics();
         //Исполнение
-        final FileBackedTasksManager newManager = fileTaskManager.loadFromFile
-                ("resources/ManagerTest-file.csv",
-                        "resources/newManagerTest-file.csv");
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
-        assertEquals(newManager.history(), fileTaskManager.history(),
+        assertEquals(newFileTaskManager.history(), fileTaskManager.history(),
                 "Истории не совпадают.");
-        assertArrayEquals(newManager.returnAllTask().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllTask().toArray(),
                 fileTaskManager.returnAllTask().toArray(),
                 "Задачи не совпадают.");
-        assertArrayEquals(newManager.returnAllEpic().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllEpic().toArray(),
                 fileTaskManager.returnAllEpic().toArray(),
                 "Эпики не совпадают.");
     }
@@ -810,19 +928,18 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findTaskById(taskId);
         fileTaskManager.findTaskById(task2Id);
         //Исполнение
-        final FileBackedTasksManager newManager = fileTaskManager.loadFromFile
-                ("resources/ManagerTest-file.csv",
-                        "resources/newManagerTest-file.csv");
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
-        assertEquals(newManager.history(), fileTaskManager.history(),
+        assertEquals(newFileTaskManager.history(), fileTaskManager.history(),
                 "Истории не совпадают.");
-        assertArrayEquals(newManager.returnAllTask().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllTask().toArray(),
                 fileTaskManager.returnAllTask().toArray(),
                 "Задачи не совпадают.");
-        assertArrayEquals(newManager.returnAllEpic().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllEpic().toArray(),
                 fileTaskManager.returnAllEpic().toArray(),
                 "Эпики не совпадают.");
-        assertArrayEquals(newManager.returnAllSubTasksByEpic(epicId).toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 fileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 "Подзадачи не совпадают.");
     }
@@ -840,21 +957,20 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.findTaskById(taskId);
         fileTaskManager.findTaskById(task2Id);
         //Исполнение
-        final FileBackedTasksManager newManager = fileTaskManager.loadFromFile
-                ("resources/ManagerTest-file.csv",
-                        "resources/newManagerTest-file.csv");
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
-        assertEquals(newManager.history(), fileTaskManager.history(),
+        assertEquals(newFileTaskManager.history(), fileTaskManager.history(),
                 "Истории не совпадают.");
-        assertArrayEquals(newManager.returnAllTask().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllTask().toArray(),
                 fileTaskManager.returnAllTask().toArray(),
                 "Задачи не совпадают.");
-        assertArrayEquals(newManager.returnAllEpic().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllEpic().toArray(),
                 fileTaskManager.returnAllEpic().toArray(),
                 "Эпики не совпадают.");
-        assertArrayEquals(newManager.returnAllSubTasksByEpic(epicId).toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 fileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
-                "Позадачи не совпадают.");
+                "Подзадачи не совпадают.");
     }
 
     @Test
@@ -867,19 +983,18 @@ class FileBackedTasksManagerTest extends TaskManagerTest {
         fileTaskManager.addSubTask(secondSubTask);
         final int epicId = epic.getId();
         //Исполнение
-        final FileBackedTasksManager newManager = fileTaskManager.loadFromFile
-                ("resources/ManagerTest-file.csv",
-                        "resources/newManagerTest-file.csv");
+        final FileBackedTasksManager newFileTaskManager = fileTaskManager.loadFromFile(
+                "resources/ManagerTest-file.csv", "resources/NewManagerTest-file.csv");
         //Проверка
-        assertEquals(newManager.history(), fileTaskManager.history(),
+        assertEquals(newFileTaskManager.history(), fileTaskManager.history(),
                 "Истории не совпадают.");
-        assertArrayEquals(newManager.returnAllTask().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllTask().toArray(),
                 fileTaskManager.returnAllTask().toArray(),
                 "Задачи не совпадают.");
-        assertArrayEquals(newManager.returnAllEpic().toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllEpic().toArray(),
                 fileTaskManager.returnAllEpic().toArray(),
                 "Эпики не совпадают.");
-        assertArrayEquals(newManager.returnAllSubTasksByEpic(epicId).toArray(),
+        assertArrayEquals(newFileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 fileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 "Подзадачи не совпадают.");
     }
