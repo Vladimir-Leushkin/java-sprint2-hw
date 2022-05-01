@@ -5,6 +5,7 @@ import model.SubTask;
 import model.Task;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     List<Task> returnAllTask();
@@ -44,5 +45,7 @@ public interface TaskManager {
     void deleteAllEpics();
 
     List<Task> history();
+
+    TreeSet<Task> getPrioritizedTasks();
 
 }

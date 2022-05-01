@@ -12,9 +12,9 @@ import static model.Status.*;
 import static model.TaskType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
+class FileBackedTasksManagerTest extends TaskManagerTest {
 
-        final FileBackedTasksManager fileTaskManager =
+        private final FileBackedTasksManager fileTaskManager =
                 new FileBackedTasksManager("resources/ManagerTest-file.csv");
 
     @Test
@@ -456,6 +456,23 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
     }
 
     @Test
+    void shouldDeleteErrorTask() {
+        //Подготовка
+        //Исполнение
+        final int taskId = task.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        fileTaskManager.deleteTask(taskId);
+                    }
+                });
+
+        assertEquals("Такая задача не существует", ex.getMessage());
+    }
+
+    @Test
     void shouldDeleteSubTask() {
         //Подготовка
         fileTaskManager.addEpic(epic);
@@ -466,6 +483,23 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
         //Проверка
         assertNull(fileTaskManager.findSubTaskById(firstSubtaskId), "Задача не удалена.");
 
+    }
+
+    @Test
+    void shouldDeleteErrorSubTask() {
+        //Подготовка
+        //Исполнение
+        final int firstSubTaskId = firstSubTask.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        fileTaskManager.deleteSubTask(firstSubTaskId);
+                    }
+                });
+
+        assertEquals("Такая подзадача не существует", ex.getMessage());
     }
 
     @Test
@@ -482,6 +516,23 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
         assertNull(fileTaskManager.findEpicById(epicId), "Задача не удалена.");
         assertNull(fileTaskManager.returnAllSubTasksByEpic(epicId));
 
+    }
+
+    @Test
+    void shouldDeleteErrorEpic() {
+        //Подготовка
+        //Исполнение
+        final int epicId = epic.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        fileTaskManager.deleteEpic(epicId);
+                    }
+                });
+
+        assertEquals("Такой эпик не существует", ex.getMessage());
     }
 
     @Test
@@ -831,6 +882,28 @@ class FileBackedTasksManagerTest extends InMemoryTaskManagerTest {
         assertArrayEquals(newManager.returnAllSubTasksByEpic(epicId).toArray(),
                 fileTaskManager.returnAllSubTasksByEpic(epicId).toArray(),
                 "Подзадачи не совпадают.");
+    }
+
+    @Test
+    void shouldAddTasksInTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        fileTaskManager.addEpic(epic);
+        fileTaskManager.addSubTask(secondSubTask);
+        fileTaskManager.addSubTask(firstSubTask);
+        fileTaskManager.addTask(task);
+        //Проверка
+        assertNotNull(fileTaskManager.getPrioritizedTasks(), "Задачи не добавляются.");
+        assertEquals(task, fileTaskManager.getPrioritizedTasks().first(),
+                "Задачи не совпадают.");
+    }
+
+    @Test
+    void shouldReturnEmptyTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        //Проверка
+        assertEquals(0, fileTaskManager.getPrioritizedTasks().size());
     }
 
 }

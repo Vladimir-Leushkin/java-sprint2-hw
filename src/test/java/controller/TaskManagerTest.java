@@ -481,6 +481,24 @@ public abstract class TaskManagerTest <T extends TaskManager> {
     }
 
     @Test
+    void shouldDeleteErrorTask() {
+        //Подготовка
+        //Исполнение
+        final int taskId = task.getId();
+        TaskManager.deleteTask(taskId);
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteTask(taskId);
+                    }
+                });
+
+        assertEquals("Такая задача не существует", ex.getMessage());
+    }
+
+    @Test
     void shouldDeleteSubTask() {
         //Подготовка
         TaskManager.addEpic(epic);
@@ -491,6 +509,23 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         //Проверка
         assertNull(TaskManager.findSubTaskById(firstSubtaskId), "Задача не удалена.");
 
+    }
+
+    @Test
+    void shouldDeleteErrorSubTask() {
+        //Подготовка
+        //Исполнение
+        final int firstSubTaskId = firstSubTask.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteSubTask(firstSubTaskId);
+                    }
+                });
+
+        assertEquals("Такая подзадача не существует", ex.getMessage());
     }
 
     @Test
@@ -507,6 +542,23 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         assertNull(TaskManager.findEpicById(epicId), "Задача не удалена.");
         assertNull(TaskManager.returnAllSubTasksByEpic(epicId));
 
+    }
+
+    @Test
+    void shouldDeleteErrorEpic() {
+        //Подготовка
+        //Исполнение
+        final int epicId = epic.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteEpic(epicId);
+                    }
+                });
+
+        assertEquals("Такой эпик не существует", ex.getMessage());
     }
 
     @Test

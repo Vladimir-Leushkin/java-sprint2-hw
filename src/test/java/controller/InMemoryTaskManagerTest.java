@@ -6,19 +6,15 @@ import model.Task;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static model.Status.*;
 import static model.TaskType.*;
-import static model.TaskType.TASK;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest{
 
-    final TaskManager TaskManager =
+    /*final TaskManager TaskManager =
             new InMemoryTaskManager();
     LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
     Duration taskDuration = Duration.ofHours(10);
@@ -42,7 +38,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest{
             taskDuration);
     SubTask thirdSubTask = new SubTask(7, SUBTASK, "SubTask4", NEW,
             "Description subtask4", firstSubTaskTime, firstSubTaskDuration,
-            2);
+            2);*/
 
     @Test
     void shouldReturnListAllTask(){
@@ -482,6 +478,23 @@ public class InMemoryTaskManagerTest extends TaskManagerTest{
     }
 
     @Test
+    void shouldDeleteErrorTask() {
+        //Подготовка
+        //Исполнение
+        final int taskId = task.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteTask(taskId);
+                    }
+                });
+
+        assertEquals("Такая задача не существует", ex.getMessage());
+    }
+
+    @Test
     void shouldDeleteSubTask() {
         //Подготовка
         TaskManager.addEpic(epic);
@@ -492,6 +505,23 @@ public class InMemoryTaskManagerTest extends TaskManagerTest{
         //Проверка
         assertNull(TaskManager.findSubTaskById(firstSubtaskId), "Задача не удалена.");
 
+    }
+
+    @Test
+    void shouldDeleteErrorSubTask() {
+        //Подготовка
+        //Исполнение
+        final int firstSubTaskId = firstSubTask.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteSubTask(firstSubTaskId);
+                    }
+                });
+
+        assertEquals("Такая подзадача не существует", ex.getMessage());
     }
 
     @Test
@@ -508,6 +538,23 @@ public class InMemoryTaskManagerTest extends TaskManagerTest{
         assertNull(TaskManager.findEpicById(epicId), "Задача не удалена.");
         assertNull(TaskManager.returnAllSubTasksByEpic(epicId));
 
+    }
+
+    @Test
+    void shouldDeleteErrorEpic() {
+        //Подготовка
+        //Исполнение
+        final int epicId = epic.getId();
+        //Проверка
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                new Executable() {
+                    @Override
+                    public void execute() {
+                        TaskManager.deleteEpic(epicId);
+                    }
+                });
+
+        assertEquals("Такой эпик не существует", ex.getMessage());
     }
 
     @Test
@@ -743,5 +790,27 @@ public class InMemoryTaskManagerTest extends TaskManagerTest{
         assertTrue(TaskManager.history().size() == 10);
         assertNotEquals(epic, TaskManager.history().get(0),
                 "Задачи совпадают.");
+    }
+
+    @Test
+    void shouldAddTasksInTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        TaskManager.addEpic(epic);
+        TaskManager.addSubTask(secondSubTask);
+        TaskManager.addSubTask(firstSubTask);
+        TaskManager.addTask(task);
+        //Проверка
+        assertNotNull(TaskManager.getPrioritizedTasks(), "Задачи не добавляются.");
+        assertEquals(task, TaskManager.getPrioritizedTasks().first(),
+                "Задачи не совпадают.");
+    }
+
+    @Test
+    void shouldReturnEmptyTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        //Проверка
+        assertEquals(0, TaskManager.getPrioritizedTasks().size());
     }
 }
