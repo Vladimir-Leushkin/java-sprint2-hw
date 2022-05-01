@@ -10,7 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HistoryManager historyManager = new InMemoryHistoryManager();
+    HistoryManager historyManager = new InMemoryHistoryManager();
 
 
     public InMemoryTaskManager() {
@@ -64,7 +64,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task findTaskById(int id) {
-        final Task task = getSubTasks().get(id);
+        final Task task = tasks.get(id);
         if (task == null) {
             return null;
         }
@@ -263,7 +263,7 @@ public class InMemoryTaskManager implements TaskManager {
         return (TreeSet<Task>) taskPrioritized;
     }
 
-    Comparator<Task> startTimeComparator = new Comparator<>() {
+    private Comparator<Task> startTimeComparator = new Comparator<>() {
         @Override
         public int compare(Task o1, Task o2) {
             if (o1.getStartTime() != null && o2.getStartTime() != null) {
@@ -273,7 +273,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     };
 
-    Set<Task> taskPrioritized = new TreeSet<>(startTimeComparator);
+    private Set<Task> taskPrioritized = new TreeSet<>(startTimeComparator);
 
     public boolean checkTaskTime(Task task) {
         Set<Task> tasksTime = getPrioritizedTasks();
@@ -295,8 +295,7 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
 
-        } catch (NullPointerException exp) {
-            System.out.println("Время занято другой задачей");
+        } catch (Exception e) {
             checkTime = false;
         }
         return checkTime;

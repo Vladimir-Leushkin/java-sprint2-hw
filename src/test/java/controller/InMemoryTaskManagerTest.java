@@ -12,9 +12,11 @@ import java.util.List;
 
 import static model.Status.*;
 import static model.TaskType.*;
+import static model.TaskType.TASK;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public abstract class TaskManagerTest <T extends TaskManager> {
+public class InMemoryTaskManagerTest extends TaskManagerTest{
 
     final TaskManager TaskManager =
             new InMemoryTaskManager();
@@ -454,7 +456,6 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         TaskManager.addSubTask(firstSubTask);
         TaskManager.addSubTask(secondSubTask);
         //Исполнение
-        final int firstSubtaskId = firstSubTask.getId();
         firstSubTask.setName("updateSubTask");
         firstSubTask.setStartTime(secondSubTaskTime);
         //Проверка
@@ -580,7 +581,7 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         final List<Task> saveHistory = TaskManager.history();
         //Проверка
         assertNotNull(TaskManager.history(), "Задачи не добавляются.");
-        assertEquals(task, saveHistory.get(0),
+        assertEquals(task, TaskManager.history().get(0),
                 "Задачи не совпадают.");
         assertEquals(epic, TaskManager.history().get(1),
                 "Задачи не совпадают.");

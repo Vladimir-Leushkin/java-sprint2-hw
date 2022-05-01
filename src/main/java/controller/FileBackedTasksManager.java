@@ -102,7 +102,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (subTask == null) {
             return null;
         }
-        history().add(subTask);
+        historyManager.add(subTask);
         save();
         return subTask;
     }
@@ -113,7 +113,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (task == null) {
             return null;
         }
-        history().add(task);
+        historyManager.add(task);
         save();
         return task;
     }
@@ -124,7 +124,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (epic == null) {
             return null;
         }
-        history().add(epic);
+        historyManager.add(epic);
         save();
         return epic;
     }
@@ -143,7 +143,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 bufferedWriter.write(subTask.asString());
             }
             bufferedWriter.write(System.lineSeparator());
-            bufferedWriter.write(historyToString(history()));
+            bufferedWriter.write(historyToString(historyManager.getHistory()));
         } catch (IOException e) {
             throw new ManagerSaveException(e);
         }
@@ -174,9 +174,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     } else {
                         List<Integer> history = historyFromString(value);
                         for (Integer id : history) {
-                            history().add(map.get(id));
+                            historyManager.add(map.get(id));
                         }
-                        for (Task task : history()) {
+                        for (Task task : historyManager.getHistory()) {
                             if (task instanceof SubTask) {
                                 manager.findSubTaskById(task.getId());
                             } else if (task instanceof Epic) {

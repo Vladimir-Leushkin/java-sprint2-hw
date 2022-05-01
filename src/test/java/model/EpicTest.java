@@ -14,19 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EpicTest {
 
-    final FileBackedTasksManager taskManager =
+    private final FileBackedTasksManager taskManager =
             new FileBackedTasksManager("resources/EpicTest-file.csv");
-    Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
-    LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
+    private Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
+    private LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
             0, 00);
-    Duration firstSubTaskDuration = Duration.ofHours(11);
-    SubTask firstSubTask = new SubTask(3, SUBTASK, "Sub Task1", NEW,
+    private Duration firstSubTaskDuration = Duration.ofHours(11);
+    private SubTask firstSubTask = new SubTask(3, SUBTASK, "Sub Task1", NEW,
             "Description sub task3", firstSubTaskTime, firstSubTaskDuration,
             epic.getId());
-    LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
+    private LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
             00, 00);
-    Duration secondSubTaskDuration = Duration.ofHours(12);
-    SubTask secondSubTask = new SubTask(4, SUBTASK, "Sub Task2", NEW,
+    private Duration secondSubTaskDuration = Duration.ofHours(12);
+    private SubTask secondSubTask = new SubTask(4, SUBTASK, "Sub Task2", NEW,
             "Description sub task4", secondSubTaskTime, secondSubTaskDuration,
             epic.getId());
 
