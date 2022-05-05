@@ -10,7 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
-    HistoryManager historyManager = new InMemoryHistoryManager();
+    protected HistoryManager historyManager = new InMemoryHistoryManager();
 
 
     public InMemoryTaskManager() {
@@ -295,7 +295,7 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (RuntimeException ex) {
             checkTime = false;
         }
         return checkTime;
