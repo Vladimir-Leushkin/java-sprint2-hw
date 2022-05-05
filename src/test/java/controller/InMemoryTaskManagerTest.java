@@ -14,31 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest{
 
-    /*final TaskManager TaskManager =
+    final TaskManager TaskManager =
             new InMemoryTaskManager();
-    LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
-    Duration taskDuration = Duration.ofHours(10);
-    Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,
-            taskDuration);
-    Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
-    LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
-            0, 00);
-    Duration firstSubTaskDuration = Duration.ofHours(11);
-    SubTask firstSubTask = new SubTask(3, SUBTASK, "SubTask3", NEW,
-            "Description subtask3", firstSubTaskTime, firstSubTaskDuration,
-            epic.getId());
-    LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
-            00, 00);
-    Duration secondSubTaskDuration = Duration.ofHours(12);
-    SubTask secondSubTask = new SubTask(4, SUBTASK, "SubTask4", NEW,
-            "Description subtask4", secondSubTaskTime, secondSubTaskDuration,
-            epic.getId());
-    Task task2 = new Task(5, TASK, "Task2", NEW, "Description task2");
-    Task task3 = new Task(6, TASK, "Task3", NEW, "Description task3", taskTime,
-            taskDuration);
-    SubTask thirdSubTask = new SubTask(7, SUBTASK, "SubTask4", NEW,
-            "Description subtask4", firstSubTaskTime, firstSubTaskDuration,
-            2);*/
 
     @Test
     void shouldReturnListAllTask(){
