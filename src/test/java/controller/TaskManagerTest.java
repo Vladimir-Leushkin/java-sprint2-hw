@@ -484,7 +484,6 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         //Подготовка
         //Исполнение
         final int taskId = task.getId();
-        manager.deleteTask(taskId);
         //Проверка
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 new Executable() {
@@ -793,5 +792,27 @@ public abstract class TaskManagerTest <T extends TaskManager> {
         assertTrue(manager.history().size() == 10);
         assertNotEquals(epic, manager.history().get(0),
                 "Задачи совпадают.");
+    }
+
+    @Test
+    void shouldAddTasksInTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        manager.addEpic(epic);
+        manager.addSubTask(secondSubTask);
+        manager.addSubTask(firstSubTask);
+        manager.addTask(task);
+        //Проверка
+        assertNotNull(manager.getPrioritizedTasks(), "Задачи не добавляются.");
+        assertEquals(task, manager.getPrioritizedTasks().first(),
+                "Задачи не совпадают.");
+    }
+
+    @Test
+    void shouldReturnEmptyTaskPrioritized() {
+        //Подготовка
+        //Исполнение
+        //Проверка
+        assertEquals(0, manager.getPrioritizedTasks().size());
     }
 }
