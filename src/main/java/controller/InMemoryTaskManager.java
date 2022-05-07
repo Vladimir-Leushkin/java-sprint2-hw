@@ -279,25 +279,22 @@ public class InMemoryTaskManager implements TaskManager {
         Set<Task> tasksTime = getPrioritizedTasks();
         boolean checkTime = false;
 
-        try {
             for (Task taskValue : tasksTime) {
-                if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
-                        task.getStartTime().isBefore(taskValue.getEndTime())) ||
-                        (task.getEndTime().isAfter(taskValue.getStartTime()) &&
-                                task.getEndTime().isBefore(taskValue.getEndTime())) ||
-                        (taskValue.getStartTime().isAfter(task.getStartTime()) &&
-                                taskValue.getStartTime().isBefore(task.getEndTime())) ||
-                        (taskValue.getEndTime().isAfter(task.getStartTime()) &&
-                                taskValue.getEndTime().isBefore(task.getEndTime())) ||
-                        task.getStartTime() == taskValue.getStartTime() ||
-                        task.getEndTime() == taskValue.getEndTime()) {
-                    checkTime = true;
+                if (taskValue.getStartTime() != null && task.getStartTime() != null){
+                    if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
+                            task.getStartTime().isBefore(taskValue.getEndTime())) ||
+                            (task.getEndTime().isAfter(taskValue.getStartTime()) &&
+                                    task.getEndTime().isBefore(taskValue.getEndTime())) ||
+                            (taskValue.getStartTime().isAfter(task.getStartTime()) &&
+                                    taskValue.getStartTime().isBefore(task.getEndTime())) ||
+                            (taskValue.getEndTime().isAfter(task.getStartTime()) &&
+                                    taskValue.getEndTime().isBefore(task.getEndTime())) ||
+                            task.getStartTime() == taskValue.getStartTime() ||
+                            task.getEndTime() == taskValue.getEndTime()) {
+                        checkTime = true;
+                    }
                 }
             }
-
-        } catch (RuntimeException ex) {
-            checkTime = false;
-        }
         return checkTime;
     }
 }
