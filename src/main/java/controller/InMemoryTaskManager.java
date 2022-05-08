@@ -279,23 +279,26 @@ public class InMemoryTaskManager implements TaskManager {
         Set<Task> tasksTime = getPrioritizedTasks();
         boolean checkTime = false;
 
-            for (Task taskValue : tasksTime) {
-                if (taskValue.getStartTime() != null && task.getStartTime() != null){
-                    if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
-                            task.getStartTime().isBefore(taskValue.getEndTime())) ||
-                            (task.getEndTime().isAfter(taskValue.getStartTime()) &&
-                                    task.getEndTime().isBefore(taskValue.getEndTime())) ||
-                            (taskValue.getStartTime().isAfter(task.getStartTime()) &&
-                                    taskValue.getStartTime().isBefore(task.getEndTime())) ||
-                            (taskValue.getEndTime().isAfter(task.getStartTime()) &&
-                                    taskValue.getEndTime().isBefore(task.getEndTime())) ||
-                            task.getStartTime() == taskValue.getStartTime() ||
-                            task.getEndTime() == taskValue.getEndTime()) {
-                        checkTime = true;
-                    }
-                }
+        for (Task taskValue : tasksTime) {
+            if (taskValue.getStartTime() == null || taskValue.getEndTime() == null ||
+                    task.getStartTime() == null || task.getEndTime() == null) {
+                return checkTime;
             }
+            if ((task.getStartTime().isAfter(taskValue.getStartTime()) &&
+                    task.getStartTime().isBefore(taskValue.getEndTime())) ||
+                    (task.getEndTime().isAfter(taskValue.getStartTime()) &&
+                            task.getEndTime().isBefore(taskValue.getEndTime())) ||
+                    (taskValue.getStartTime().isAfter(task.getStartTime()) &&
+                            taskValue.getStartTime().isBefore(task.getEndTime())) ||
+                    (taskValue.getEndTime().isAfter(task.getStartTime()) &&
+                            taskValue.getEndTime().isBefore(task.getEndTime())) ||
+                    task.getStartTime() == taskValue.getStartTime() ||
+                    task.getEndTime() == taskValue.getEndTime()) {
+                checkTime = true;
+            }
+        }
         return checkTime;
     }
+
 }
 
