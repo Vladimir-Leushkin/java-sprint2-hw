@@ -37,7 +37,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         assertEquals(2, allTask.size(), "Неверное количество задач.");
         assertEquals(task, allTask.get(0), "Задачи не совпадают.");
         assertArrayEquals(allTask.toArray(), allNewTask.toArray());
-
     }
 
     @Test
