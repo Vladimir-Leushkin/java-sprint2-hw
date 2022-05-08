@@ -14,35 +14,35 @@ import static model.Status.*;
 import static model.TaskType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class TaskManagerTest <T extends TaskManager> {
+public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected T manager;
-    LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
-    Duration taskDuration = Duration.ofHours(10);
-    Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,
+    protected LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
+    protected Duration taskDuration = Duration.ofHours(10);
+    protected Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,
             taskDuration);
-    Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
-    LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
+    protected Epic epic = new Epic(2, EPIC, "Epic2", "Description epic2");
+    protected LocalDateTime firstSubTaskTime = LocalDateTime.of(2022, 01, 2,
             0, 00);
-    Duration firstSubTaskDuration = Duration.ofHours(11);
-    SubTask firstSubTask = new SubTask(3, SUBTASK, "SubTask3", NEW,
+    protected Duration firstSubTaskDuration = Duration.ofHours(11);
+    protected SubTask firstSubTask = new SubTask(3, SUBTASK, "SubTask3", NEW,
             "Description subtask3", firstSubTaskTime, firstSubTaskDuration,
             epic.getId());
-    LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
+    protected LocalDateTime secondSubTaskTime = LocalDateTime.of(2022, 1, 3,
             00, 00);
-    Duration secondSubTaskDuration = Duration.ofHours(12);
-    SubTask secondSubTask = new SubTask(4, SUBTASK, "SubTask4", NEW,
+    protected Duration secondSubTaskDuration = Duration.ofHours(12);
+    protected SubTask secondSubTask = new SubTask(4, SUBTASK, "SubTask4", NEW,
             "Description subtask4", secondSubTaskTime, secondSubTaskDuration,
             epic.getId());
-    Task task2 = new Task(5, TASK, "Task2", NEW, "Description task2");
-    Task task3 = new Task(6, TASK, "Task3", NEW, "Description task3", taskTime,
+    protected Task task2 = new Task(5, TASK, "Task2", NEW, "Description task2");
+    protected Task task3 = new Task(6, TASK, "Task3", NEW, "Description task3", taskTime,
             taskDuration);
-    SubTask thirdSubTask = new SubTask(7, SUBTASK, "SubTask4", NEW,
+    protected SubTask thirdSubTask = new SubTask(7, SUBTASK, "SubTask4", NEW,
             "Description subtask4", firstSubTaskTime, firstSubTaskDuration,
             2);
 
     @Test
-    void shouldReturnListAllTask(){
+    void shouldReturnListAllTask() {
         //Подготовка
         manager.addTask(task);
         manager.addTask(task2);

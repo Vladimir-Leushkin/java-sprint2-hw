@@ -2,12 +2,11 @@ package controller;
 
 import org.junit.jupiter.api.BeforeEach;
 
-public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
+public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
-
-        @BeforeEach
-        public void beforeEach() {
-                 manager = new InMemoryTaskManager();
-        }
+    @BeforeEach
+    public void beforeEach() {
+        manager = new InMemoryTaskManager();
+    }
 
 }
