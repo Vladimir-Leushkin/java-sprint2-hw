@@ -129,7 +129,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return epic;
     }
 
-    public void save() throws ManagerSaveException {
+    protected void save() throws ManagerSaveException {
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
                 file))) {
