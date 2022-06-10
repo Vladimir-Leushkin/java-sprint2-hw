@@ -16,6 +16,7 @@ public class KVTaskClient {
     }
 
     private String register(String url) {
+
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -28,42 +29,58 @@ public class KVTaskClient {
                         + response.statusCode());
             }
             return response.body();
-        } catch (IOException | InterruptedException e) {
-            throw new IllegalArgumentException("Can't do save request", e);
+        }catch (IOException | java.lang.InterruptedException InterruptedException){
+            System.out.println("Во время выполнения запроса возникла ошибка. " +
+                    "Проверьте, пожалуйста, URL-адрес и повторите попытку.");
+
+        }catch (IllegalArgumentException e){
+            System.out.println("Введённый вами адрес не соответствует формату URL. " +
+                    "Попробуйте, пожалуйста, снова.");
         }
+        return url;
     }
 
     public String load(String key) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url + "load/" + key + "?API_KEY=" + apiKey))
+                    .uri(URI.create(url + "load/" + key + "?API_TOKEN=" + apiKey))
                     .GET()
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            //System.out.println(response.body());
             if (response.statusCode() != 200) {
-                throw new IllegalArgumentException("Can't do save request, status code" + response.statusCode());
+                throw new IllegalArgumentException("Не удалось загрузить ответ KVServer, код ошибки " +
+                        " " + response.statusCode());
             }
             return response.body();
         } catch (IOException | InterruptedException e) {
-            throw new IllegalArgumentException("Can't do save request", e);
+            throw new IllegalArgumentException("Не удалось загрузить ответ KVServer", e);
         }
     }
 
     public void put(String key, String value) {
         try {
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(value);
+            final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(value);
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url + "save/" + key + "?API_KEY=" + apiKey))
+                    .uri(URI.create(url + "save/" + key + "?API_TOKEN=" + apiKey))
                     .POST(body)
                     .build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
             if (response.statusCode() != 200) {
-                throw new IllegalArgumentException("Can't do save request, status code" + response.statusCode());
+                throw new IllegalArgumentException("Не удалось сохранить запрос, код ошибки" + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
-            throw new IllegalArgumentException("Can't do save request", e);
+            throw new IllegalArgumentException("Не удалось сохранить запрос", e);
         }
+    }
+
+    private static class ManagerSaveException extends RuntimeException {
+
+        private ManagerSaveException(IOException e) {
+            super(e);
+        }
+
     }
 }
