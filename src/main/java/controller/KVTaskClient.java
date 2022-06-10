@@ -29,11 +29,11 @@ public class KVTaskClient {
                         + response.statusCode());
             }
             return response.body();
-        }catch (IOException | java.lang.InterruptedException InterruptedException){
+        } catch (IOException | java.lang.InterruptedException InterruptedException) {
             System.out.println("Во время выполнения запроса возникла ошибка. " +
                     "Проверьте, пожалуйста, URL-адрес и повторите попытку.");
 
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Введённый вами адрес не соответствует формату URL. " +
                     "Попробуйте, пожалуйста, снова.");
         }
@@ -74,13 +74,5 @@ public class KVTaskClient {
         } catch (IOException | InterruptedException e) {
             throw new IllegalArgumentException("Не удалось сохранить запрос", e);
         }
-    }
-
-    private static class ManagerSaveException extends RuntimeException {
-
-        private ManagerSaveException(IOException e) {
-            super(e);
-        }
-
     }
 }
