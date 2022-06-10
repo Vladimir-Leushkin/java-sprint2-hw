@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
 
-    KVServer kvServer;
-    HttpTaskServer server;
+    protected KVServer kvServer;
+    protected HttpTaskServer server;
 
     @BeforeEach
     void beforeEach() {
