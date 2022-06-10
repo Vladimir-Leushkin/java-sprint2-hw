@@ -8,7 +8,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private static final int RECENT_TASKS_COUNT = 10;
     private Node head = null;
     private Node tail = null;
-    HashMap<Integer, Node> map = new HashMap<>();
+    private HashMap<Integer, Node> map = new HashMap<>();
 
 
     public InMemoryHistoryManager() {
