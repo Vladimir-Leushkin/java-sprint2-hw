@@ -1,5 +1,6 @@
 package controller;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
@@ -17,7 +18,8 @@ public class KVServer {
     public static final int PORT = 8078;
     private final String apiToken;
     private final HttpServer server;
-    private final Map<String, String> data = new HashMap<>();
+    private Map<String, String> data = new HashMap<>();
+    private Gson gson = new Gson();
 
     public KVServer() throws IOException {
         apiToken = generateApiToken();
@@ -38,6 +40,7 @@ public class KVServer {
             }
             if ("GET".equals(h.getRequestMethod())) {
                 String key = h.getRequestURI().getPath().substring("/load/".length());
+                System.out.println(key);
                 if (key.isEmpty()) {
                     System.out.println("Key для загрузки пустой. " +
                             "key указывается в пути: /load/{key}");
@@ -45,6 +48,7 @@ public class KVServer {
                     return;
                 }
                 String valueResponse = data.get(key);
+                System.out.println("Значение для ключа " + key + " успешно извлечено");
                 sendText(h, valueResponse);
             } else {
                 System.out.println("/load ждёт GET-запрос, а получил: " + h.getRequestMethod());
@@ -66,6 +70,7 @@ public class KVServer {
             }
             if ("POST".equals(h.getRequestMethod())) {
                 String key = h.getRequestURI().getPath().substring("/save/".length());
+                System.out.println(key);
                 if (key.isEmpty()) {
                     System.out.println("Key для сохранения пустой. " +
                             "key указывается в пути: /save/{key}");
@@ -112,6 +117,11 @@ public class KVServer {
         server.start();
     }
 
+    public void stop() {
+        System.out.println("Cервер остановлен на порту " + PORT);
+        server.stop(1);
+    }
+
     private String generateApiToken() {
         return "" + System.currentTimeMillis();
     }
@@ -128,9 +138,10 @@ public class KVServer {
 
     protected void sendText(HttpExchange h, String text) throws IOException {
         byte[] resp = text.getBytes(UTF_8);
-        h.getResponseHeaders().add("Content-Type", "application/json");
-        h.sendResponseHeaders(200, resp.length);
-        h.getResponseBody().write(resp);
+            h.getResponseHeaders().add("Content-Type", "application/json");
+            h.sendResponseHeaders(200, resp.length);
+            h.getResponseBody().write(resp);
+
     }
 }
 
