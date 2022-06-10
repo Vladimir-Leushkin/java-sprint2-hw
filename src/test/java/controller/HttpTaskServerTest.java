@@ -28,7 +28,7 @@ public class HttpTaskServerTest {
     protected HTTPTaskManager manager;
     protected KVServer kvServer;
     HttpTaskServer server;
-    Gson gson;
+    Gson gson ;
     HttpClient client = HttpClient.newHttpClient();
     protected LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
     protected Duration taskDuration = Duration.ofHours(10);
@@ -67,7 +67,7 @@ public class HttpTaskServerTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        gson = new Gson();
+        gson = server.getGson();
         server.start();
     }
 

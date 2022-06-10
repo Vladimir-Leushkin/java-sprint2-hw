@@ -1,11 +1,14 @@
 package controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Epic;
+import model.LocalDateTimeAdapter;
 import model.SubTask;
 import model.Task;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +26,16 @@ public class HTTPTaskManager extends FileBackedTasksManager {
 
     public HTTPTaskManager(int port) {
         super(null);
-        gson = new Gson();
+        gson = getGson();
         client = new KVTaskClient(port);
 
+    }
+
+    public static Gson getGson(){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        gsonBuilder.serializeNulls();
+        return gsonBuilder.create();
     }
 
     @Override
