@@ -29,7 +29,7 @@ public class HttpTaskServerTest {
     protected KVServer kvServer;
     protected HttpTaskServer server;
     protected Gson gson ;
-    HttpClient client = HttpClient.newHttpClient();
+    protected HttpClient client = HttpClient.newHttpClient();
     protected LocalDateTime taskTime = LocalDateTime.of(2022, 01, 1, 00, 00);
     protected Duration taskDuration = Duration.ofHours(10);
     protected Task task = new Task(1, TASK, "Task1", NEW, "Description task1", taskTime,

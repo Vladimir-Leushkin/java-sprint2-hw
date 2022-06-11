@@ -42,7 +42,7 @@ public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
         //Подготовка
 
         //Исполнение
-        HTTPTaskManager newManager = manager.load(8078);
+        final HTTPTaskManager newManager = manager.load(8078);
         //Проверка
         System.out.println(newManager.returnAllTask());
         System.out.println(newManager.returnAllEpic());
@@ -76,7 +76,7 @@ public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
         manager.findTaskById(taskId);
         manager.findTaskById(task2Id);
         //Исполнение
-        HTTPTaskManager newManager = manager.load(8078);
+        final HTTPTaskManager newManager = manager.load(8078);
         //Проверка
         assertEquals(newManager.history(), manager.history(),
                 "Истории не совпадают.");
@@ -104,7 +104,7 @@ public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
         manager.findTaskById(taskId);
         manager.findTaskById(task2Id);
         //Исполнение
-        HTTPTaskManager newManager = manager.load(8078);
+        final HTTPTaskManager newManager = manager.load(8078);
         //Проверка
         assertEquals(newManager.history(), manager.history(),
                 "Истории не совпадают.");
@@ -129,7 +129,7 @@ public class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
         manager.addSubTask(secondSubTask);
         final int epicId = epic.getId();
         //Исполнение
-        HTTPTaskManager newManager = manager.load(8078);
+        final HTTPTaskManager newManager = manager.load(8078);
         //Проверка
         assertEquals(newManager.history(), manager.history(),
                 "Истории не совпадают.");
